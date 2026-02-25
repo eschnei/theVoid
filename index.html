@@ -48,17 +48,16 @@
             pointer-events: none;
         }
 
-        /* Monitor screen area overlay */
+        /* Monitor screen area overlay - contained within the CRT bezel */
         .monitor-screen {
             position: absolute;
-            left: 29.5%;
-            top: 13%;
-            width: 42.5%; /* 72% - 29.5% */
-            height: 69%; /* 82% - 13% */
-            border-radius: 6px;
+            left: 28.7%;
+            top: 27.7%;
+            width: 41.3%;
+            height: 47.5%;
+            border-radius: 8px;
             pointer-events: auto;
             overflow: hidden;
-            /* Placeholder for CRT effects and terminal content */
         }
 
         /* Terminal container inside the screen */
@@ -72,32 +71,31 @@
             /* Terminal content will be added here */
         }
 
-        /* Monitor power button overlay */
+        /* Monitor power button overlay - rectangular button on right side */
         .power-button {
             position: absolute;
-            left: calc(66% - 1.5%);
-            top: calc(89.5% - 1.75%);
-            width: 3%;
+            left: calc(64% - 1.5%);
+            top: calc(85.5% - 1.75%);
+            width: 4%;
             height: 3.5%;
             cursor: pointer;
             pointer-events: auto;
-            border-radius: 50%;
+            border-radius: 3px;
             /* Debug: uncomment to see hitbox */
             /* background: rgba(255, 0, 0, 0.3); */
         }
 
         .power-button:hover {
-            /* TODO: Add hover effect */
+            /* Subtle hover indication */
         }
 
-        /* Power LED indicator */
+        /* Power LED indicator - next to power button on chin */
         .power-led {
             position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 8px;
-            height: 8px;
+            left: 61.5%;
+            top: 83.0%;
+            width: 6px;
+            height: 6px;
             background: #33ff33;
             border-radius: 50%;
             box-shadow: 0 0 8px #33ff33;
@@ -122,14 +120,12 @@
         /* Lamp pull chain overlay */
         .lamp-chain {
             position: absolute;
-            left: calc(17% - 2%);
-            top: calc(52% - 7%);
-            width: 4%;
-            height: 14%;
+            left: 6.6%;
+            top: 74%;
+            width: 1.8%;
+            height: 6%;
             cursor: pointer;
             pointer-events: auto;
-            /* Debug: uncomment to see hitbox */
-            /* background: rgba(0, 255, 0, 0.3); */
         }
 
         .lamp-chain:hover {
@@ -326,7 +322,8 @@
             width: 100%;
             height: 100%;
             padding: 12px 16px;
-            overflow: hidden;
+            overflow-y: auto;
+            overflow-x: hidden;
             font-family: 'VT323', monospace;
             font-size: clamp(10px, 1.4vw, 18px);
             line-height: 1.3;
@@ -457,6 +454,72 @@
             animation: none;
             opacity: 1;
         }
+
+        /* ========================================
+           Playbill Mode Styles
+           (Netscape browser container)
+           ======================================== */
+
+        /* Netscape browser container - fills the terminal screen area */
+        #netscape-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: none;
+            background: #c0c0c0;
+            z-index: 50;
+            overflow: hidden;
+        }
+
+        /* Show netscape container when playbill mode is active */
+        .terminal-screen.playbill-active #netscape-container {
+            display: block;
+        }
+
+        /* Hide terminal output when playbill mode is active */
+        .terminal-screen.playbill-active .terminal-output {
+            display: none;
+        }
+
+        /* Hide hidden input when playbill mode is active */
+        .terminal-screen.playbill-active .terminal-hidden-input {
+            display: none;
+        }
+
+        /* Intense glitch effect for playbill transition */
+        .terminal-output.glitching-intense {
+            text-shadow: -4px 0 #ff0000, 4px 0 #00ffff, 0 0 10px rgba(51, 255, 51, 0.5);
+        }
+
+        .terminal-output.glitching-intense span {
+            text-shadow: -4px 0 #ff0000, 4px 0 #00ffff, 0 0 10px rgba(51, 255, 51, 0.5);
+        }
+
+        /* Screen-wide glitch overlay for intense effect */
+        .terminal-screen.intense-glitch::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent 0px,
+                rgba(255, 255, 255, 0.03) 1px,
+                transparent 2px
+            );
+            animation: intenseGlitchScan 0.1s linear infinite;
+            pointer-events: none;
+            z-index: 200;
+        }
+
+        @keyframes intenseGlitchScan {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(10px); }
+        }
     </style>
 </head>
 <body>
@@ -482,14 +545,19 @@
                         <div class="terminal-output" id="terminalOutput"></div>
                         <!-- Hidden input for keyboard capture -->
                         <input type="text" id="terminalInput" class="terminal-hidden-input" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+                        <!-- Netscape browser container for playbill mode -->
+                        <div id="netscape-container">
+                            <!-- Netscape browser content will be added here -->
+                        </div>
                     </div>
                 </div>
             </div>
 
             <!-- Monitor power button -->
-            <div class="power-button" id="powerButton" role="button" aria-label="Monitor Power Button">
-                <div class="power-led" id="powerLed"></div>
-            </div>
+            <div class="power-button" id="powerButton" role="button" aria-label="Monitor Power Button"></div>
+
+            <!-- Power LED indicator - separate element below the button -->
+            <div class="power-led" id="powerLed"></div>
 
             <!-- Lamp pull chain - click to toggle lamp glow -->
             <div class="lamp-chain" id="lampChain" role="button" aria-label="Lamp Pull Chain"></div>
@@ -518,6 +586,7 @@
             // State flags
             let isPoweredOn = false;
             let flickerIntervalId = null;
+            let isPlaybillMode = false;
 
             // Image dimensions (original)
             const IMAGE_WIDTH = 2000;
@@ -1043,6 +1112,9 @@
                 if (command === 'clear') {
                     // Clear command - clear screen and show fresh prompt
                     clearTerminalForInput();
+                } else if (command === 'playbill the void' || command === '/playbill the void') {
+                    // Launch the playbill/Netscape browser experience
+                    launchPlaybill();
                 } else if (command === '') {
                     // Empty command - just show new prompt
                     createInputLine();
@@ -1109,6 +1181,123 @@
                 }, CURSOR_BLINK_DELAY);
             }
 
+            /* ========================================
+               Playbill Mode Functions
+               (Netscape browser transition)
+               ======================================== */
+
+            /**
+             * Trigger intense glitch effect for playbill transitions
+             * More aggressive than the standard glitch effect
+             * @param {number} duration - Duration of glitch in milliseconds (default: 500)
+             * @returns {Promise}
+             */
+            function triggerIntenseGlitch(duration = 500) {
+                return new Promise(resolve => {
+                    const termOutput = document.getElementById('terminalOutput');
+                    const startTime = performance.now();
+                    let animationId = null;
+
+                    // Add intense glitching classes
+                    termOutput.classList.add('glitching-intense');
+                    terminalScreen.classList.add('intense-glitch');
+
+                    function animateGlitch(currentTime) {
+                        const elapsed = currentTime - startTime;
+
+                        if (elapsed < duration) {
+                            // Apply more aggressive random transforms
+                            const translateX = (Math.random() - 0.5) * 12; // ±6px
+                            const translateY = (Math.random() - 0.5) * 8;  // ±4px
+                            const skewX = (Math.random() - 0.5) * 2;       // ±1deg
+                            termOutput.style.transform = `translate(${translateX}px, ${translateY}px) skewX(${skewX}deg)`;
+
+                            // Random opacity flickers
+                            if (Math.random() < 0.3) {
+                                termOutput.style.opacity = 0.7 + Math.random() * 0.3;
+                            } else {
+                                termOutput.style.opacity = 1;
+                            }
+
+                            // Continue animation
+                            animationId = requestAnimationFrame(animateGlitch);
+                        } else {
+                            // Reset transforms and remove glitching classes
+                            termOutput.style.transform = '';
+                            termOutput.style.opacity = '';
+                            termOutput.classList.remove('glitching-intense');
+                            terminalScreen.classList.remove('intense-glitch');
+                            resolve();
+                        }
+                    }
+
+                    // Start the animation loop
+                    animationId = requestAnimationFrame(animateGlitch);
+                });
+            }
+
+            /**
+             * Launch the playbill/Netscape browser experience
+             * Called when user types 'playbill the void' or '/playbill the void'
+             */
+            async function launchPlaybill() {
+                console.log('Launching playbill mode...');
+
+                // Display "ACCESSING VOID_NET..." message
+                await typeLine('ACCESSING VOID_NET...', 'text-bright-green', 50);
+
+                // Small delay before glitch
+                await delay(200);
+
+                // Trigger intense glitch effect (500ms)
+                await triggerIntenseGlitch(500);
+
+                // Activate playbill mode
+                isPlaybillMode = true;
+                terminalScreen.classList.add('playbill-active');
+
+                // Set up Escape key listener for exiting
+                document.addEventListener('keydown', handlePlaybillKeyDown);
+
+                console.log('Playbill mode activated');
+            }
+
+            /**
+             * Handle keydown events while in playbill mode
+             * @param {KeyboardEvent} e
+             */
+            function handlePlaybillKeyDown(e) {
+                if (e.key === 'Escape' && isPlaybillMode) {
+                    e.preventDefault();
+                    exitPlaybill();
+                }
+            }
+
+            /**
+             * Exit playbill mode and return to terminal
+             */
+            async function exitPlaybill() {
+                console.log('Exiting playbill mode...');
+
+                // Trigger intense glitch effect (300ms)
+                await triggerIntenseGlitch(300);
+
+                // Deactivate playbill mode
+                isPlaybillMode = false;
+                terminalScreen.classList.remove('playbill-active');
+
+                // Remove the Escape key listener
+                document.removeEventListener('keydown', handlePlaybillKeyDown);
+
+                // Clear terminal and show fresh prompt
+                clearTerminalForInput();
+
+                // Focus input again
+                terminalInput.focus();
+
+                console.log('Returned to terminal mode');
+            }
+
             // Wait for image to load before initializing
             if (bgImage.complete) {
                 init();
@@ -1122,5 +1311,6 @@
             });
         })();
     </script>
+
 </body>
 </html>
