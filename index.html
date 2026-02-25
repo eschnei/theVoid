@@ -520,6 +520,340 @@
             0% { transform: translateY(0); }
             100% { transform: translateY(10px); }
         }
+
+        /* ========================================
+           Netscape Navigator 4.0 Browser Chrome
+           ======================================== */
+
+        /* Main Netscape browser wrapper */
+        .netscape-browser {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            height: 100%;
+            background: #c0c0c0;
+            font-family: "MS Sans Serif", Arial, Helvetica, sans-serif;
+            font-size: 11px;
+            color: #000;
+        }
+
+        /* Windows 95 style 3D border - outset (raised) */
+        .win95-outset {
+            border: 2px solid;
+            border-color: #ffffff #808080 #808080 #ffffff;
+        }
+
+        /* Windows 95 style 3D border - inset (sunken) */
+        .win95-inset {
+            border: 2px solid;
+            border-color: #808080 #ffffff #ffffff #808080;
+        }
+
+        /* Title bar */
+        .netscape-titlebar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: linear-gradient(90deg, #000080 0%, #1084d0 100%);
+            color: #fff;
+            font-weight: bold;
+            font-size: 11px;
+            padding: 2px 3px;
+            min-height: 18px;
+        }
+
+        .netscape-titlebar-text {
+            flex: 1;
+            padding-left: 2px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .netscape-titlebar-buttons {
+            display: flex;
+            gap: 2px;
+        }
+
+        .netscape-titlebar-btn {
+            width: 16px;
+            height: 14px;
+            background: #c0c0c0;
+            border: 2px solid;
+            border-color: #ffffff #808080 #808080 #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 9px;
+            font-weight: bold;
+            cursor: default;
+            line-height: 1;
+        }
+
+        .netscape-titlebar-btn:active {
+            border-color: #808080 #ffffff #ffffff #808080;
+        }
+
+        /* Menu bar */
+        .netscape-menubar {
+            display: flex;
+            background: #c0c0c0;
+            padding: 1px 2px;
+            border-bottom: 1px solid #808080;
+        }
+
+        .netscape-menu-item {
+            padding: 2px 8px;
+            cursor: default;
+        }
+
+        .netscape-menu-item:hover {
+            background: #000080;
+            color: #fff;
+        }
+
+        /* Navigation toolbar */
+        .netscape-toolbar {
+            display: flex;
+            align-items: center;
+            background: #c0c0c0;
+            padding: 2px 4px;
+            gap: 2px;
+            border-bottom: 1px solid #808080;
+            flex-wrap: wrap;
+        }
+
+        .netscape-toolbar-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-width: 40px;
+            padding: 2px 4px;
+            background: #c0c0c0;
+            border: 2px solid;
+            border-color: #ffffff #808080 #808080 #ffffff;
+            cursor: pointer;
+            font-size: 9px;
+            text-align: center;
+        }
+
+        .netscape-toolbar-btn:hover {
+            background: #d4d0c8;
+        }
+
+        .netscape-toolbar-btn:active {
+            border-color: #808080 #ffffff #ffffff #808080;
+        }
+
+        .netscape-toolbar-icon {
+            font-size: 14px;
+            line-height: 1;
+            margin-bottom: 1px;
+        }
+
+        .netscape-toolbar-label {
+            font-size: 9px;
+        }
+
+        .netscape-toolbar-separator {
+            width: 2px;
+            height: 28px;
+            background: linear-gradient(90deg, #808080 0%, #808080 50%, #fff 50%, #fff 100%);
+            margin: 0 2px;
+        }
+
+        /* Location bar */
+        .netscape-location-bar {
+            display: flex;
+            align-items: center;
+            background: #c0c0c0;
+            padding: 2px 4px;
+            gap: 4px;
+            border-bottom: 1px solid #808080;
+        }
+
+        .netscape-location-label {
+            font-size: 11px;
+            white-space: nowrap;
+        }
+
+        .netscape-location-input {
+            flex: 1;
+            background: #fff;
+            border: 2px solid;
+            border-color: #808080 #ffffff #ffffff #808080;
+            padding: 2px 4px;
+            font-family: "MS Sans Serif", Arial, Helvetica, sans-serif;
+            font-size: 11px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .netscape-whats-related {
+            padding: 2px 6px;
+            background: #c0c0c0;
+            border: 2px solid;
+            border-color: #ffffff #808080 #808080 #ffffff;
+            font-size: 10px;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        .netscape-whats-related:active {
+            border-color: #808080 #ffffff #ffffff #808080;
+        }
+
+        /* Bookmarks bar */
+        .netscape-bookmarks-bar {
+            display: flex;
+            align-items: center;
+            background: #c0c0c0;
+            padding: 2px 4px;
+            gap: 4px;
+            border-bottom: 1px solid #808080;
+            font-size: 10px;
+        }
+
+        .netscape-bookmark-btn {
+            padding: 1px 6px;
+            background: #c0c0c0;
+            border: 1px solid;
+            border-color: #ffffff #808080 #808080 #ffffff;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        .netscape-bookmark-btn:hover {
+            background: #d4d0c8;
+        }
+
+        /* Content area */
+        #geocities-content {
+            flex: 1;
+            background: #fff;
+            border: 2px solid;
+            border-color: #808080 #ffffff #ffffff #808080;
+            margin: 2px;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        /* Custom scrollbar for GeoCities content */
+        #geocities-content::-webkit-scrollbar {
+            width: 16px;
+        }
+
+        #geocities-content::-webkit-scrollbar-track {
+            background: #c0c0c0;
+            border-left: 1px solid #808080;
+        }
+
+        #geocities-content::-webkit-scrollbar-thumb {
+            background: #c0c0c0;
+            border: 2px solid;
+            border-color: #ffffff #808080 #808080 #ffffff;
+        }
+
+        #geocities-content::-webkit-scrollbar-thumb:hover {
+            background: #d4d0c8;
+        }
+
+        #geocities-content::-webkit-scrollbar-button:vertical:start:decrement,
+        #geocities-content::-webkit-scrollbar-button:vertical:end:increment {
+            display: block;
+            height: 16px;
+            background: #c0c0c0;
+            border: 2px solid;
+            border-color: #ffffff #808080 #808080 #ffffff;
+        }
+
+        /* Status bar */
+        .netscape-statusbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #c0c0c0;
+            padding: 2px 4px;
+            border-top: 1px solid #fff;
+            font-size: 10px;
+            min-height: 18px;
+        }
+
+        .netscape-status-text {
+            border: 1px solid;
+            border-color: #808080 #ffffff #ffffff #808080;
+            padding: 1px 4px;
+            flex: 1;
+            background: #c0c0c0;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .netscape-status-security {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            padding: 0 4px;
+        }
+
+        .netscape-lock-icon {
+            font-size: 12px;
+        }
+
+        /* Netscape N logo - top right corner */
+        #netscape-logo {
+            position: absolute;
+            top: 2px;
+            right: 4px;
+            width: 36px;
+            height: 36px;
+            background: #000;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 10;
+        }
+
+        .netscape-n {
+            color: #00ff00;
+            font-family: serif;
+            font-size: 28px;
+            font-weight: bold;
+            animation: netscapeSpin 2s linear infinite;
+        }
+
+        @keyframes netscapeSpin {
+            0% { transform: rotateY(0deg); }
+            100% { transform: rotateY(360deg); }
+        }
+
+        /* Netscape logo easter egg - pulsing glow on hover */
+        #netscape-logo:hover .netscape-n {
+            text-shadow: 0 0 10px #00ff00, 0 0 20px #00ff00;
+            animation: netscapePulse 0.5s ease-in-out infinite alternate, netscapeSpin 2s linear infinite;
+        }
+
+        @keyframes netscapePulse {
+            0% { opacity: 0.8; }
+            100% { opacity: 1; }
+        }
+
+        /* Toolbar wrapper for relative positioning of N logo */
+        .netscape-toolbar-wrapper {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Glitch effect for Stop button click */
+        .netscape-browser.glitching {
+            filter: hue-rotate(90deg) saturate(2);
+        }
     </style>
 </head>
 <body>
@@ -547,7 +881,106 @@
                         <input type="text" id="terminalInput" class="terminal-hidden-input" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
                         <!-- Netscape browser container for playbill mode -->
                         <div id="netscape-container">
-                            <!-- Netscape browser content will be added here -->
+                            <!-- Netscape Navigator 4.0 Browser Chrome -->
+                            <div class="netscape-browser">
+                                <!-- Title Bar -->
+                                <div class="netscape-titlebar">
+                                    <span class="netscape-titlebar-text">Netscape - [La Morrigan Forever]</span>
+                                    <div class="netscape-titlebar-buttons">
+                                        <div class="netscape-titlebar-btn">_</div>
+                                        <div class="netscape-titlebar-btn">&#9633;</div>
+                                        <div class="netscape-titlebar-btn">X</div>
+                                    </div>
+                                </div>
+
+                                <!-- Toolbar Wrapper (relative positioning for N logo) -->
+                                <div class="netscape-toolbar-wrapper">
+                                    <!-- Menu Bar -->
+                                    <div class="netscape-menubar">
+                                        <span class="netscape-menu-item">File</span>
+                                        <span class="netscape-menu-item">Edit</span>
+                                        <span class="netscape-menu-item">View</span>
+                                        <span class="netscape-menu-item">Go</span>
+                                        <span class="netscape-menu-item">Communicator</span>
+                                        <span class="netscape-menu-item">Help</span>
+                                    </div>
+
+                                    <!-- Navigation Toolbar -->
+                                    <div class="netscape-toolbar">
+                                        <div class="netscape-toolbar-btn">
+                                            <span class="netscape-toolbar-icon">&#9664;</span>
+                                            <span class="netscape-toolbar-label">Back</span>
+                                        </div>
+                                        <div class="netscape-toolbar-btn">
+                                            <span class="netscape-toolbar-icon">&#9654;</span>
+                                            <span class="netscape-toolbar-label">Forward</span>
+                                        </div>
+                                        <div class="netscape-toolbar-btn">
+                                            <span class="netscape-toolbar-icon">&#8635;</span>
+                                            <span class="netscape-toolbar-label">Reload</span>
+                                        </div>
+                                        <div class="netscape-toolbar-btn">
+                                            <span class="netscape-toolbar-icon">&#8962;</span>
+                                            <span class="netscape-toolbar-label">Home</span>
+                                        </div>
+                                        <div class="netscape-toolbar-separator"></div>
+                                        <div class="netscape-toolbar-btn">
+                                            <span class="netscape-toolbar-icon">&#128269;</span>
+                                            <span class="netscape-toolbar-label">Search</span>
+                                        </div>
+                                        <div class="netscape-toolbar-btn">
+                                            <span class="netscape-toolbar-icon">&#9733;</span>
+                                            <span class="netscape-toolbar-label">Guide</span>
+                                        </div>
+                                        <div class="netscape-toolbar-separator"></div>
+                                        <div class="netscape-toolbar-btn">
+                                            <span class="netscape-toolbar-icon">&#128424;</span>
+                                            <span class="netscape-toolbar-label">Print</span>
+                                        </div>
+                                        <div class="netscape-toolbar-btn">
+                                            <span class="netscape-toolbar-icon">&#128274;</span>
+                                            <span class="netscape-toolbar-label">Security</span>
+                                        </div>
+                                        <div class="netscape-toolbar-btn" id="netscape-stop-btn">
+                                            <span class="netscape-toolbar-icon">&#10006;</span>
+                                            <span class="netscape-toolbar-label">Stop</span>
+                                        </div>
+                                    </div>
+
+                                    <!-- Location Bar -->
+                                    <div class="netscape-location-bar">
+                                        <span class="netscape-location-label">Location:</span>
+                                        <div class="netscape-location-input">http://www.geocities.com/SiliconValley/Void/4721/LaMorriganForever/index.html</div>
+                                        <div class="netscape-whats-related">What's Related &#9660;</div>
+                                    </div>
+
+                                    <!-- Bookmarks Bar -->
+                                    <div class="netscape-bookmarks-bar">
+                                        <div class="netscape-bookmark-btn">&#128278; Bookmarks &#9660;</div>
+                                        <div class="netscape-bookmark-btn">&#127968; Netscape</div>
+                                        <div class="netscape-bookmark-btn">&#128176; Shop</div>
+                                        <div class="netscape-bookmark-btn">&#128240; News</div>
+                                    </div>
+
+                                    <!-- Spinning N Logo (top-right corner) -->
+                                    <div id="netscape-logo" title="Click for a surprise!">
+                                        <span class="netscape-n">N</span>
+                                    </div>
+                                </div>
+
+                                <!-- Content Area (GeoCities page goes here) -->
+                                <div id="geocities-content">
+                                    <!-- GeoCities fan site content will be inserted here -->
+                                </div>
+
+                                <!-- Status Bar -->
+                                <div class="netscape-statusbar">
+                                    <div class="netscape-status-text" id="netscape-status-text">Document: Done</div>
+                                    <div class="netscape-status-security">
+                                        <span class="netscape-lock-icon">&#128275;</span>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -1259,7 +1692,122 @@
                 // Set up Escape key listener for exiting
                 document.addEventListener('keydown', handlePlaybillKeyDown);
 
+                // Initialize Netscape browser chrome interactions
+                initNetscapeChrome();
+
                 console.log('Playbill mode activated');
+            }
+
+            /* ========================================
+               Netscape Browser Chrome Functions
+               ======================================== */
+
+            let statusFlickerIntervalId = null;
+
+            /**
+             * Initialize Netscape browser chrome interactions
+             */
+            function initNetscapeChrome() {
+                // Start status bar flickering
+                startStatusBarFlicker();
+
+                // Set up Stop button click handler for glitch effect
+                const stopBtn = document.getElementById('netscape-stop-btn');
+                if (stopBtn) {
+                    stopBtn.addEventListener('click', triggerNetscapeGlitch);
+                }
+
+                // Set up Netscape N logo easter egg click handler
+                const netscapeLogo = document.getElementById('netscape-logo');
+                if (netscapeLogo) {
+                    netscapeLogo.addEventListener('click', triggerNetscapeLogoEasterEgg);
+                }
+
+                console.log('Netscape chrome initialized');
+            }
+
+            /**
+             * Clean up Netscape browser chrome interactions
+             */
+            function cleanupNetscapeChrome() {
+                // Stop status bar flickering
+                if (statusFlickerIntervalId) {
+                    clearInterval(statusFlickerIntervalId);
+                    statusFlickerIntervalId = null;
+                }
+
+                // Remove Stop button event listener
+                const stopBtn = document.getElementById('netscape-stop-btn');
+                if (stopBtn) {
+                    stopBtn.removeEventListener('click', triggerNetscapeGlitch);
+                }
+
+                // Remove Netscape logo event listener
+                const netscapeLogo = document.getElementById('netscape-logo');
+                if (netscapeLogo) {
+                    netscapeLogo.removeEventListener('click', triggerNetscapeLogoEasterEgg);
+                }
+
+                console.log('Netscape chrome cleaned up');
+            }
+
+            /**
+             * Start the status bar flickering effect
+             * Randomly changes status text to "Transferring data from void..."
+             */
+            function startStatusBarFlicker() {
+                const statusText = document.getElementById('netscape-status-text');
+                if (!statusText) return;
+
+                const normalText = 'Document: Done';
+                const flickerText = 'Transferring data from void...';
+
+                statusFlickerIntervalId = setInterval(function() {
+                    // 15% chance to flicker
+                    if (Math.random() < 0.15) {
+                        statusText.textContent = flickerText;
+                        // Reset after 800-1500ms
+                        setTimeout(function() {
+                            statusText.textContent = normalText;
+                        }, 800 + Math.random() * 700);
+                    }
+                }, 3000 + Math.random() * 2000);
+            }
+
+            /**
+             * Trigger glitch effect when Stop button is clicked
+             */
+            function triggerNetscapeGlitch() {
+                const browser = document.querySelector('.netscape-browser');
+                if (!browser) return;
+
+                browser.classList.add('glitching');
+
+                // Random glitch duration
+                setTimeout(function() {
+                    browser.classList.remove('glitching');
+                }, 150 + Math.random() * 200);
+            }
+
+            /**
+             * Netscape N logo easter egg - triggers special effect when clicked
+             */
+            function triggerNetscapeLogoEasterEgg() {
+                console.log('Netscape logo easter egg triggered!');
+
+                // Trigger multiple rapid glitches
+                let glitchCount = 0;
+                const maxGlitches = 5;
+
+                function doGlitch() {
+                    triggerNetscapeGlitch();
+                    glitchCount++;
+                    if (glitchCount < maxGlitches) {
+                        setTimeout(doGlitch, 100 + Math.random() * 100);
+                    }
+                }
+
+                doGlitch();
             }
 
             /**
@@ -1278,6 +1826,9 @@
              */
             async function exitPlaybill() {
                 console.log('Exiting playbill mode...');
+
+                // Clean up Netscape chrome interactions
+                cleanupNetscapeChrome();
 
                 // Trigger intense glitch effect (300ms)
                 await triggerIntenseGlitch(300);
