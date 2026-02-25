@@ -90,6 +90,35 @@
             /* TODO: Add hover effect */
         }
 
+        /* Power LED indicator */
+        .power-led {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 8px;
+            height: 8px;
+            background: #33ff33;
+            border-radius: 50%;
+            box-shadow: 0 0 8px #33ff33;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .power-led.active {
+            opacity: 0.8;
+            animation: ledPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes ledPulse {
+            0%, 100% {
+                opacity: 0.8;
+            }
+            50% {
+                opacity: 1;
+            }
+        }
+
         /* Lamp pull chain overlay */
         .lamp-chain {
             position: absolute;
@@ -148,7 +177,7 @@
 
             <!-- Monitor power button -->
             <div class="power-button" id="powerButton" role="button" aria-label="Monitor Power Button">
-                <!-- TODO: Power button click handler - triggers CRT boot animation -->
+                <div class="power-led" id="powerLed"></div>
             </div>
 
             <!-- Lamp pull chain -->
@@ -173,8 +202,12 @@
             const monitorScreen = document.getElementById('monitorScreen');
             const terminalContainer = document.getElementById('terminalContainer');
             const powerButton = document.getElementById('powerButton');
+            const powerLed = document.getElementById('powerLed');
             const lampChain = document.getElementById('lampChain');
             const lampGlow = document.getElementById('lampGlow');
+
+            // State flags
+            let isPoweredOn = false;
 
             // Image dimensions (original)
             const IMAGE_WIDTH = 2000;
@@ -261,16 +294,43 @@
 
             /**
              * Handle power button click
-             * TODO: Implement CRT boot animation with terminal boot sequence
+             * Only triggers once - subsequent clicks are ignored
              */
             function handlePowerButtonClick() {
-                console.log('Power button clicked - TODO: Trigger CRT boot animation');
-                // TODO: Implement the following:
+                // Prevent re-triggering if already powered on
+                if (isPoweredOn) {
+                    return;
+                }
+
+                // Set powered on state
+                isPoweredOn = true;
+
+                // Activate the LED indicator with pulsing animation
+                powerLed.classList.add('active');
+
+                // Change cursor to default since button is no longer interactive
+                powerButton.style.cursor = 'default';
+
+                console.log('Power button activated - LED on');
+
+                // TODO: Trigger CRT power-on animation here
+                // This will be implemented in a future feature:
                 // 1. CRT turn-on effect (screen warming up)
                 // 2. Scanline and flicker effects
                 // 3. Terminal boot sequence with typewriter text
                 // 4. Glitch effects during boot
                 // 5. Interactive terminal with blinking cursor
+                triggerCRTPowerOn();
+            }
+
+            /**
+             * Trigger the CRT power-on sequence
+             * TODO: Implement full CRT boot animation in next feature
+             */
+            function triggerCRTPowerOn() {
+                // Placeholder for CRT power-on animation
+                // This function will be implemented to start the boot sequence
+                console.log('CRT power-on sequence starting...');
             }
 
             /**
