@@ -145,8 +145,31 @@
             height: 100%;
             pointer-events: none;
             opacity: 0;
-            transition: opacity 0.3s ease;
-            /* TODO: Add warm glow gradient/effect */
+            transition: opacity 0.5s ease;
+            /* Warm ambient glow covering left third of image */
+            background: radial-gradient(
+                ellipse 50% 70% at 18% 16%,
+                rgba(255, 180, 80, 0.10) 0%,
+                rgba(255, 160, 60, 0.05) 40%,
+                transparent 70%
+            );
+        }
+
+        /* Brighter spot at bulb position */
+        .lamp-glow::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(
+                ellipse 12% 10% at 18% 16%,
+                rgba(255, 200, 100, 0.20) 0%,
+                rgba(255, 180, 80, 0.10) 50%,
+                transparent 100%
+            );
+            pointer-events: none;
         }
 
         .lamp-glow.active {
@@ -180,15 +203,11 @@
                 <div class="power-led" id="powerLed"></div>
             </div>
 
-            <!-- Lamp pull chain -->
-            <div class="lamp-chain" id="lampChain" role="button" aria-label="Lamp Pull Chain">
-                <!-- TODO: Lamp toggle click handler - toggles warm glow effect -->
-            </div>
+            <!-- Lamp pull chain - click to toggle lamp glow -->
+            <div class="lamp-chain" id="lampChain" role="button" aria-label="Lamp Pull Chain"></div>
 
-            <!-- Lamp glow effect overlay -->
-            <div class="lamp-glow" id="lampGlow">
-                <!-- TODO: Warm glow effect visuals -->
-            </div>
+            <!-- Lamp glow effect overlay - warm radial gradient from bulb position -->
+            <div class="lamp-glow" id="lampGlow"></div>
         </div>
     </div>
 
@@ -334,15 +353,9 @@
             }
 
             /**
-             * Handle lamp chain click
-             * TODO: Implement lamp toggle with warm glow effect
+             * Handle lamp chain click - toggles warm glow effect
              */
             function handleLampChainClick() {
-                console.log('Lamp chain clicked - TODO: Toggle warm glow effect');
-                // TODO: Implement the following:
-                // 1. Toggle lamp glow state
-                // 2. Animate warm light spreading across the scene
-                // 3. Possibly add subtle swing animation to chain
                 lampGlow.classList.toggle('active');
             }
 
