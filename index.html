@@ -175,6 +175,102 @@
         .lamp-glow.active {
             opacity: 1;
         }
+
+        /* ========================================
+           CRT Power-On Animation Styles
+           ======================================== */
+
+        /* White flash overlay for CRT turn-on */
+        .crt-flash {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #fff;
+            opacity: 0;
+            pointer-events: none;
+            z-index: 10;
+        }
+
+        .crt-flash.active {
+            animation: crtFlash 250ms ease-out forwards;
+        }
+
+        @keyframes crtFlash {
+            0% {
+                opacity: 0;
+            }
+            30% {
+                opacity: 0.25;
+            }
+            100% {
+                opacity: 0;
+            }
+        }
+
+        /* Terminal screen with clip-path expansion */
+        .terminal-screen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            clip-path: inset(50% 0 50% 0);
+            opacity: 0;
+            pointer-events: none;
+            z-index: 5;
+        }
+
+        .terminal-screen.expanding {
+            opacity: 1;
+            animation: crtExpand 0.6s ease-out forwards;
+        }
+
+        .terminal-screen.expanded {
+            opacity: 1;
+            clip-path: inset(0 0 0 0);
+            pointer-events: auto;
+        }
+
+        @keyframes crtExpand {
+            0% {
+                clip-path: inset(50% 0 50% 0);
+            }
+            100% {
+                clip-path: inset(0 0 0 0);
+            }
+        }
+
+        /* Bright horizontal line glow during expansion */
+        .terminal-screen.expanding::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: #fff;
+            box-shadow: 0 0 20px 5px rgba(255, 255, 255, 0.8),
+                        0 0 40px 10px rgba(200, 220, 255, 0.5);
+            transform: translateY(-50%);
+            animation: lineGlow 0.6s ease-out forwards;
+        }
+
+        @keyframes lineGlow {
+            0% {
+                opacity: 1;
+                height: 2px;
+            }
+            50% {
+                opacity: 0.8;
+            }
+            100% {
+                opacity: 0;
+                height: 4px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -191,10 +287,16 @@
             <!-- Monitor screen area -->
             <div class="monitor-screen" id="monitorScreen">
                 <div class="terminal-container" id="terminalContainer">
-                    <!-- Terminal content will be injected here -->
-                    <!-- TODO: Add CRT boot animation -->
-                    <!-- TODO: Add terminal with blinking cursor -->
-                    <!-- TODO: Add scanlines, flicker, glare effects -->
+                    <!-- CRT white flash effect -->
+                    <div class="crt-flash" id="crtFlash"></div>
+
+                    <!-- Terminal screen with clip-path animation -->
+                    <div class="terminal-screen" id="terminalScreen">
+                        <!-- Boot sequence content will be added here after animation completes -->
+                        <!-- TODO: Add typewriter boot text -->
+                        <!-- TODO: Add interactive terminal with blinking cursor -->
+                        <!-- TODO: Add scanlines, flicker, glare effects -->
+                    </div>
                 </div>
             </div>
 
@@ -220,6 +322,8 @@
             const overlayWrapper = document.getElementById('overlayWrapper');
             const monitorScreen = document.getElementById('monitorScreen');
             const terminalContainer = document.getElementById('terminalContainer');
+            const crtFlash = document.getElementById('crtFlash');
+            const terminalScreen = document.getElementById('terminalScreen');
             const powerButton = document.getElementById('powerButton');
             const powerLed = document.getElementById('powerLed');
             const lampChain = document.getElementById('lampChain');
@@ -332,24 +436,48 @@
 
                 console.log('Power button activated - LED on');
 
-                // TODO: Trigger CRT power-on animation here
-                // This will be implemented in a future feature:
-                // 1. CRT turn-on effect (screen warming up)
-                // 2. Scanline and flicker effects
-                // 3. Terminal boot sequence with typewriter text
-                // 4. Glitch effects during boot
-                // 5. Interactive terminal with blinking cursor
+                // Trigger the CRT power-on animation sequence
                 triggerCRTPowerOn();
             }
 
             /**
              * Trigger the CRT power-on sequence
-             * TODO: Implement full CRT boot animation in next feature
+             * Animation sequence:
+             * 1. Wait 200ms after LED appears
+             * 2. White flash (250ms)
+             * 3. Horizontal line expansion via clip-path (600ms)
+             * 4. Terminal ready for boot sequence content
              */
             function triggerCRTPowerOn() {
-                // Placeholder for CRT power-on animation
-                // This function will be implemented to start the boot sequence
                 console.log('CRT power-on sequence starting...');
+
+                // Step 1: Wait 200ms after LED appears before starting CRT animation
+                setTimeout(function() {
+                    // Step 2: Trigger white flash
+                    crtFlash.classList.add('active');
+                    console.log('CRT flash triggered');
+
+                    // Step 3: Start horizontal line expansion after brief flash buildup (~100ms)
+                    setTimeout(function() {
+                        terminalScreen.classList.add('expanding');
+                        console.log('CRT expansion started');
+
+                        // Step 4: After expansion animation completes (600ms), finalize state
+                        setTimeout(function() {
+                            terminalScreen.classList.remove('expanding');
+                            terminalScreen.classList.add('expanded');
+                            console.log('CRT expansion complete - terminal ready');
+
+                            // Remove flash element class after animation
+                            crtFlash.classList.remove('active');
+
+                            // TODO: Start boot sequence text animation here
+                            // startBootSequence();
+                        }, 600);
+
+                    }, 100);
+
+                }, 200);
             }
 
             /**
