@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Into The Void - A Deathcore Opera</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background: #0a0b10;
+            font-family: 'VT323', monospace;
+        }
+
+        /* Main container for the background image */
+        .background-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Background image with object-fit: contain */
+        .background-image {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            pointer-events: none;
+            user-select: none;
+        }
+
+        /* Wrapper that matches the rendered image dimensions */
+        .overlay-wrapper {
+            position: absolute;
+            pointer-events: none;
+        }
+
+        /* Monitor screen area overlay */
+        .monitor-screen {
+            position: absolute;
+            left: 29.5%;
+            top: 13%;
+            width: 42.5%; /* 72% - 29.5% */
+            height: 69%; /* 82% - 13% */
+            border-radius: 6px;
+            pointer-events: auto;
+            overflow: hidden;
+            /* Placeholder for CRT effects and terminal content */
+        }
+
+        /* Terminal container inside the screen */
+        .terminal-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            /* Terminal content will be added here */
+        }
+
+        /* Monitor power button overlay */
+        .power-button {
+            position: absolute;
+            left: calc(66% - 1.5%);
+            top: calc(89.5% - 1.75%);
+            width: 3%;
+            height: 3.5%;
+            cursor: pointer;
+            pointer-events: auto;
+            border-radius: 50%;
+            /* Debug: uncomment to see hitbox */
+            /* background: rgba(255, 0, 0, 0.3); */
+        }
+
+        .power-button:hover {
+            /* TODO: Add hover effect */
+        }
+
+        /* Lamp pull chain overlay */
+        .lamp-chain {
+            position: absolute;
+            left: calc(17% - 2%);
+            top: calc(52% - 7%);
+            width: 4%;
+            height: 14%;
+            cursor: pointer;
+            pointer-events: auto;
+            /* Debug: uncomment to see hitbox */
+            /* background: rgba(0, 255, 0, 0.3); */
+        }
+
+        .lamp-chain:hover {
+            /* TODO: Add hover effect */
+        }
+
+        /* Lamp glow effect (initially hidden) */
+        .lamp-glow {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            /* TODO: Add warm glow gradient/effect */
+        }
+
+        .lamp-glow.active {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="background-container">
+        <img
+            src="Images/deskMonitor.png"
+            alt="Retro CRT Monitor Setup"
+            class="background-image"
+            id="bgImage"
+        >
+
+        <!-- Overlay wrapper - positioned to match rendered image bounds -->
+        <div class="overlay-wrapper" id="overlayWrapper">
+            <!-- Monitor screen area -->
+            <div class="monitor-screen" id="monitorScreen">
+                <div class="terminal-container" id="terminalContainer">
+                    <!-- Terminal content will be injected here -->
+                    <!-- TODO: Add CRT boot animation -->
+                    <!-- TODO: Add terminal with blinking cursor -->
+                    <!-- TODO: Add scanlines, flicker, glare effects -->
+                </div>
+            </div>
+
+            <!-- Monitor power button -->
+            <div class="power-button" id="powerButton" role="button" aria-label="Monitor Power Button">
+                <!-- TODO: Power button click handler - triggers CRT boot animation -->
+            </div>
+
+            <!-- Lamp pull chain -->
+            <div class="lamp-chain" id="lampChain" role="button" aria-label="Lamp Pull Chain">
+                <!-- TODO: Lamp toggle click handler - toggles warm glow effect -->
+            </div>
+
+            <!-- Lamp glow effect overlay -->
+            <div class="lamp-glow" id="lampGlow">
+                <!-- TODO: Warm glow effect visuals -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            'use strict';
+
+            // DOM Elements
+            const bgImage = document.getElementById('bgImage');
+            const overlayWrapper = document.getElementById('overlayWrapper');
+            const monitorScreen = document.getElementById('monitorScreen');
+            const terminalContainer = document.getElementById('terminalContainer');
+            const powerButton = document.getElementById('powerButton');
+            const lampChain = document.getElementById('lampChain');
+            const lampGlow = document.getElementById('lampGlow');
+
+            // Image dimensions (original)
+            const IMAGE_WIDTH = 2000;
+            const IMAGE_HEIGHT = 1396;
+            const IMAGE_ASPECT_RATIO = IMAGE_WIDTH / IMAGE_HEIGHT;
+
+            /**
+             * Calculate the rendered image bounds accounting for object-fit: contain
+             * Returns the actual pixel position and size of the rendered image
+             */
+            function calculateImageBounds() {
+                const containerWidth = window.innerWidth;
+                const containerHeight = window.innerHeight;
+                const containerAspectRatio = containerWidth / containerHeight;
+
+                let renderedWidth, renderedHeight, offsetX, offsetY;
+
+                if (containerAspectRatio > IMAGE_ASPECT_RATIO) {
+                    // Container is wider than image - letterboxing on sides
+                    renderedHeight = containerHeight;
+                    renderedWidth = containerHeight * IMAGE_ASPECT_RATIO;
+                    offsetX = (containerWidth - renderedWidth) / 2;
+                    offsetY = 0;
+                } else {
+                    // Container is taller than image - letterboxing on top/bottom
+                    renderedWidth = containerWidth;
+                    renderedHeight = containerWidth / IMAGE_ASPECT_RATIO;
+                    offsetX = 0;
+                    offsetY = (containerHeight - renderedHeight) / 2;
+                }
+
+                return {
+                    width: renderedWidth,
+                    height: renderedHeight,
+                    left: offsetX,
+                    top: offsetY
+                };
+            }
+
+            /**
+             * Update the overlay wrapper position to match the rendered image bounds
+             */
+            function updateOverlayPosition() {
+                const bounds = calculateImageBounds();
+
+                overlayWrapper.style.width = bounds.width + 'px';
+                overlayWrapper.style.height = bounds.height + 'px';
+                overlayWrapper.style.left = bounds.left + 'px';
+                overlayWrapper.style.top = bounds.top + 'px';
+            }
+
+            /**
+             * Initialize the page
+             */
+            function init() {
+                // Update overlay position on load
+                updateOverlayPosition();
+
+                // Update overlay position on window resize
+                window.addEventListener('resize', updateOverlayPosition);
+
+                // Set up click handlers
+                setupEventListeners();
+
+                console.log('Into The Void - Initialized');
+            }
+
+            /**
+             * Set up event listeners for interactive elements
+             */
+            function setupEventListeners() {
+                // Power button click handler
+                powerButton.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    handlePowerButtonClick();
+                });
+
+                // Lamp chain click handler
+                lampChain.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    handleLampChainClick();
+                });
+            }
+
+            /**
+             * Handle power button click
+             * TODO: Implement CRT boot animation with terminal boot sequence
+             */
+            function handlePowerButtonClick() {
+                console.log('Power button clicked - TODO: Trigger CRT boot animation');
+                // TODO: Implement the following:
+                // 1. CRT turn-on effect (screen warming up)
+                // 2. Scanline and flicker effects
+                // 3. Terminal boot sequence with typewriter text
+                // 4. Glitch effects during boot
+                // 5. Interactive terminal with blinking cursor
+            }
+
+            /**
+             * Handle lamp chain click
+             * TODO: Implement lamp toggle with warm glow effect
+             */
+            function handleLampChainClick() {
+                console.log('Lamp chain clicked - TODO: Toggle warm glow effect');
+                // TODO: Implement the following:
+                // 1. Toggle lamp glow state
+                // 2. Animate warm light spreading across the scene
+                // 3. Possibly add subtle swing animation to chain
+                lampGlow.classList.toggle('active');
+            }
+
+            // Wait for image to load before initializing
+            if (bgImage.complete) {
+                init();
+            } else {
+                bgImage.addEventListener('load', init);
+            }
+
+            // Also handle potential load issues
+            bgImage.addEventListener('error', function() {
+                console.error('Failed to load background image');
+            });
+        })();
+    </script>
+</body>
+</html>
