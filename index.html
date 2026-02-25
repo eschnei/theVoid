@@ -399,6 +399,64 @@
         .terminal-output.glitching span {
             text-shadow: -2px 0 #ff0000, 2px 0 #00ffff, 0 0 6px rgba(51, 255, 51, 0.3);
         }
+
+        /* ========================================
+           Interactive Terminal Input Styles
+           ======================================== */
+
+        /* Hidden input field - positioned off-screen but focusable */
+        .terminal-hidden-input {
+            position: absolute;
+            left: -9999px;
+            top: -9999px;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        /* Terminal output scrolling when boot is complete */
+        .terminal-screen.boot-complete .terminal-output {
+            overflow-y: auto;
+        }
+
+        /* Custom scrollbar styling for terminal */
+        .terminal-output::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .terminal-output::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        .terminal-output::-webkit-scrollbar-thumb {
+            background: #1a8a1a;
+            border-radius: 3px;
+        }
+
+        .terminal-output::-webkit-scrollbar-thumb:hover {
+            background: #33ff33;
+        }
+
+        /* Current input line display */
+        .input-line {
+            display: inline;
+        }
+
+        /* User input text styling */
+        .user-input {
+            color: #33ff33;
+            text-shadow: 0 0 6px rgba(51, 255, 51, 0.3);
+        }
+
+        /* Interactive cursor - block style */
+        .cursor.interactive {
+            animation: cursorBlink 1.06s step-end infinite;
+        }
+
+        /* Cursor stops blinking while typing */
+        .cursor.typing {
+            animation: none;
+            opacity: 1;
+        }
     </style>
 </head>
 <body>
@@ -848,15 +906,207 @@
                 await delay(300);
                 await typeLine('VOID_OS v0.1.7 — READY', 'text-bright-green');
                 await typeLine('', 'text-bright-green');
-                displayInstant('void@terminal_07:~$ ', 'text-bright-green');
 
-                // Add blinking cursor
-                addCursor();
-
-                // Mark boot as complete
+                // Mark boot as complete and enable interactive input
                 isBootComplete = true;
                 terminalScreen.classList.add('boot-complete');
                 console.log('Boot sequence complete');
+
+                // Initialize interactive terminal input
+                initTerminalInput();
+            }
+
+            /* ========================================
+               Interactive Terminal Input Functions
+               ======================================== */
+
+            // Terminal input state
+            const terminalInput = document.getElementById('terminalInput');
+            let currentInputText = '';
+            let cursorElement = null;
+            let inputDisplayElement = null;
+            let cursorBlinkTimeoutId = null;
+            let lastInputTime = 0;
+            const CURSOR_BLINK_DELAY = 500; // ms to wait before resuming blink
+            const CURSOR_BLINK_INTERVAL = 530; // ms for blink cycle
+
+            /**
+             * Initialize interactive terminal input after boot sequence
+             */
+            function initTerminalInput() {
+                // Create the input display span and cursor
+                createInputLine();
+
+                // Focus the hidden input
+                terminalInput.focus();
+
+                // Set up event listeners for the terminal screen to re-focus input
+                terminalScreen.addEventListener('click', function() {
+                    if (isBootComplete) {
+                        terminalInput.focus();
+                    }
+                });
+
+                // Set up input event listeners
+                terminalInput.addEventListener('input', handleInput);
+                terminalInput.addEventListener('keydown', handleKeyDown);
+
+                // Handle blur - re-focus when clicking terminal area
+                terminalInput.addEventListener('blur', function() {
+                    // Small delay to allow for intentional blur
+                    setTimeout(function() {
+                        if (isBootComplete && document.activeElement !== terminalInput) {
+                            // Only refocus if user clicks within terminal screen
+                        }
+                    }, 100);
+                });
+
+                console.log('Interactive terminal input initialized');
+            }
+
+            /**
+             * Create a new input line with prompt, input display, and cursor
+             */
+            function createInputLine() {
+                // Display the prompt
+                displayInstant('void@terminal_07:~$ ', 'text-bright-green');
+
+                // Create input display span
+                inputDisplayElement = document.createElement('span');
+                inputDisplayElement.className = 'user-input input-line';
+                inputDisplayElement.textContent = '';
+                terminalOutput.appendChild(inputDisplayElement);
+
+                // Create cursor element
+                cursorElement = document.createElement('span');
+                cursorElement.className = 'cursor interactive';
+                cursorElement.innerHTML = '&nbsp;';
+                terminalOutput.appendChild(cursorElement);
+
+                // Start cursor blinking
+                startCursorBlink();
+
+                // Reset input state
+                currentInputText = '';
+                terminalInput.value = '';
+
+                // Scroll to bottom
+                scrollToBottom();
+            }
+
+            /**
+             * Handle input changes from hidden input field
+             */
+            function handleInput(e) {
+                currentInputText = terminalInput.value;
+                updateInputDisplay();
+                stopCursorBlink();
+                scheduleCursorBlink();
+            }
+
+            /**
+             * Handle special keys (Enter, Backspace)
+             */
+            function handleKeyDown(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    submitCommand();
+                }
+                // Note: Backspace is handled automatically by the input field
+            }
+
+            /**
+             * Update the displayed input text
+             */
+            function updateInputDisplay() {
+                if (inputDisplayElement) {
+                    inputDisplayElement.textContent = currentInputText;
+                }
+                scrollToBottom();
+            }
+
+            /**
+             * Submit the current command
+             */
+            function submitCommand() {
+                const command = currentInputText.trim().toLowerCase();
+
+                // Remove cursor temporarily
+                if (cursorElement && cursorElement.parentNode) {
+                    cursorElement.parentNode.removeChild(cursorElement);
+                }
+
+                // Add newline after current input
+                displayInstant('\n', 'text-bright-green');
+
+                // Process the command
+                if (command === 'clear') {
+                    // Clear command - clear screen and show fresh prompt
+                    clearTerminalForInput();
+                } else if (command === '') {
+                    // Empty command - just show new prompt
+                    createInputLine();
+                } else {
+                    // Unknown command - show error message
+                    displayInstant("COMMAND NOT RECOGNIZED. Type 'help'.\n", 'text-dim-green');
+                    createInputLine();
+                }
+
+                // Focus input again
+                terminalInput.focus();
+            }
+
+            /**
+             * Clear terminal and show fresh prompt (for 'clear' command)
+             */
+            function clearTerminalForInput() {
+                terminalOutput.innerHTML = '';
+                displayInstant('VOID_OS v0.1.7 — READY\n\n', 'text-bright-green');
+                createInputLine();
+            }
+
+            /**
+             * Scroll terminal output to bottom
+             */
+            function scrollToBottom() {
+                terminalOutput.scrollTop = terminalOutput.scrollHeight;
+            }
+
+            /**
+             * Start cursor blinking animation
+             */
+            function startCursorBlink() {
+                if (cursorElement) {
+                    cursorElement.classList.remove('typing');
+                    cursorElement.classList.add('interactive');
+                }
+            }
+
+            /**
+             * Stop cursor blinking (solid cursor while typing)
+             */
+            function stopCursorBlink() {
+                if (cursorElement) {
+                    cursorElement.classList.remove('interactive');
+                    cursorElement.classList.add('typing');
+                }
+                // Clear any pending blink restart
+                if (cursorBlinkTimeoutId) {
+                    clearTimeout(cursorBlinkTimeoutId);
+                    cursorBlinkTimeoutId = null;
+                }
+            }
+
+            /**
+             * Schedule cursor blink to restart after idle period
+             */
+            function scheduleCursorBlink() {
+                if (cursorBlinkTimeoutId) {
+                    clearTimeout(cursorBlinkTimeoutId);
+                }
+                cursorBlinkTimeoutId = setTimeout(function() {
+                    startCursorBlink();
+                }, CURSOR_BLINK_DELAY);
             }
 
             // Wait for image to load before initializing
