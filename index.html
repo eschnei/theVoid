@@ -405,10 +405,8 @@
 
                     <!-- Terminal screen with clip-path animation -->
                     <div class="terminal-screen" id="terminalScreen">
-                        <!-- Boot sequence content will be added here after animation completes -->
-                        <!-- TODO: Add typewriter boot text -->
-                        <!-- TODO: Add interactive terminal with blinking cursor -->
-                        <!-- TODO: Add scanlines, flicker, glare effects -->
+                        <!-- Terminal output for boot sequence -->
+                        <div class="terminal-output" id="terminalOutput"></div>
                     </div>
                 </div>
             </div>
@@ -588,8 +586,8 @@
                             // Start CRT screen flicker effect
                             startScreenFlicker();
 
-                            // TODO: Start boot sequence text animation here
-                            // startBootSequence();
+                            // Start boot sequence text animation
+                            startBootSequence();
                         }, 600);
 
                     }, 100);
@@ -628,6 +626,178 @@
                 flickerIntervalId = setTimeout(triggerFlicker, initialDelay);
 
                 console.log('Screen flicker effect started');
+            }
+
+            /* ========================================
+               Terminal Boot Sequence Functions
+               ======================================== */
+
+            // Terminal output element reference
+            const terminalOutput = document.getElementById('terminalOutput');
+
+            // Boot sequence state
+            let isBootComplete = false;
+
+            /**
+             * Helper function for async delays
+             * @param {number} ms - Milliseconds to wait
+             * @returns {Promise}
+             */
+            function delay(ms) {
+                return new Promise(resolve => setTimeout(resolve, ms));
+            }
+
+            /**
+             * Type text with typewriter effect
+             * @param {string} text - Text to type
+             * @param {string} colorClass - CSS class for text color
+             * @param {number} speed - Milliseconds per character (default: 35)
+             * @returns {Promise}
+             */
+            async function typeText(text, colorClass, speed = 35) {
+                const span = document.createElement('span');
+                span.className = colorClass;
+                terminalOutput.appendChild(span);
+
+                for (let i = 0; i < text.length; i++) {
+                    span.textContent += text[i];
+                    await delay(speed);
+                }
+            }
+
+            /**
+             * Type a line of text followed by newline
+             * @param {string} text - Text to type
+             * @param {string} colorClass - CSS class for text color
+             * @param {number} speed - Milliseconds per character
+             * @returns {Promise}
+             */
+            async function typeLine(text, colorClass, speed = 35) {
+                await typeText(text + '\n', colorClass, speed);
+            }
+
+            /**
+             * Display text instantly (no typewriter effect)
+             * @param {string} text - Text to display
+             * @param {string} colorClass - CSS class for text color
+             */
+            function displayInstant(text, colorClass) {
+                const span = document.createElement('span');
+                span.className = colorClass;
+                span.textContent = text;
+                terminalOutput.appendChild(span);
+            }
+
+            /**
+             * Clear the terminal screen
+             */
+            function clearScreen() {
+                terminalOutput.innerHTML = '';
+            }
+
+            /**
+             * Add blinking cursor to terminal
+             */
+            function addCursor() {
+                const cursor = document.createElement('span');
+                cursor.className = 'cursor';
+                cursor.innerHTML = '&nbsp;';
+                terminalOutput.appendChild(cursor);
+            }
+
+            /**
+             * Main boot sequence - orchestrates all phases
+             */
+            async function startBootSequence() {
+                console.log('Boot sequence starting...');
+
+                // Phase 1 - BIOS (dim green)
+                await typeLine('BIOS v2.14 ... OK', 'text-dim-green');
+                await delay(100);
+                await typeLine('MEM TEST: 640K CONVENTIONAL / 3072K EXTENDED ... OK', 'text-dim-green');
+                await delay(100);
+                await typeLine('DETECTING DRIVES ...', 'text-dim-green');
+                await delay(100);
+                await typeLine('  HDD0: MAXTOR 540MB [OK]', 'text-dim-green');
+                await delay(100);
+                await typeLine('  FDD0: 3.5" 1.44MB [OK]', 'text-dim-green');
+                await delay(100);
+                await typeLine('  CD-ROM: GENERIC 4X [NOT FOUND]', 'text-dim-green');
+                await delay(100);
+                await typeLine('', 'text-dim-green');
+                await typeLine('LOADING SYSTEM ...', 'text-dim-green');
+
+                // Phase 2 - 500ms pause, clear screen, VOID_OS display (bright green)
+                await delay(500);
+                clearScreen();
+                await typeLine('VOID_OS v0.1.7 (BUILD 001)', 'text-bright-green');
+                await delay(100);
+                await typeLine('SYS_DATE: 10/31/1997', 'text-bright-green');
+                await delay(100);
+                await typeLine('NODE: TERMINAL_07', 'text-bright-green');
+                await delay(100);
+                await typeLine('STATUS: ███████████ ONLINE', 'text-bright-green');
+
+                // Phase 3 - 600ms pause, unauthorized transmission (red)
+                await delay(600);
+                await typeLine('', 'text-red');
+                // Glitch placeholder hook - feature-6 will add glitch effect here
+                // window.triggerGlitchEffect && window.triggerGlitchEffect();
+                await typeLine('[UNAUTHORIZED TRANSMISSION DETECTED]', 'text-red');
+
+                // Phase 4 - 400ms pause, source info (dim green, slower ~55ms/char)
+                await delay(400);
+                await typeLine('', 'text-dim-green');
+                await typeLine('SOURCE: UNKNOWN', 'text-dim-green', 55);
+                await typeLine('ORIGIN: THE UNDERGROUND /// NEW YORK CITY', 'text-dim-green', 55);
+                await typeLine('SIGNAL: ██████████ LOCKED', 'text-dim-green', 55);
+
+                // Phase 5 - 500ms pause, (glitch placeholder), title display (amber, instant)
+                await delay(500);
+                // Glitch placeholder hook - feature-6 will add brief glitch here
+                // window.triggerBriefGlitch && window.triggerBriefGlitch();
+                await typeLine('', 'text-amber');
+                displayInstant('═══════════════════════════════════════\n', 'text-amber');
+                displayInstant('  INTO THE VOID\n', 'text-amber');
+                displayInstant('  A Deathcore Opera\n', 'text-amber');
+                displayInstant('═══════════════════════════════════════\n', 'text-amber');
+
+                // Phase 6 - 300ms pause, credits (bright green, normal speed)
+                await delay(300);
+                await typeLine('', 'text-bright-green');
+                await typeLine('  Presented by VOID_TERMINAL.EXE', 'text-bright-green');
+                await typeLine('  Sponsored by PromptCo Industries', 'text-bright-green');
+                await typeLine('  "We were listening before you spoke."', 'text-bright-green');
+                await typeLine('', 'text-bright-green');
+                await typeLine('  Starring:', 'text-bright-green');
+                await typeLine('    LA MORRIGAN — The Phantom Queen', 'text-bright-green');
+                await typeLine('    QUINN — The Founder', 'text-bright-green');
+
+                // Phase 7 - 200ms pause, warning (red)
+                await delay(200);
+                await typeLine('', 'text-red');
+                await typeLine('  WARNING: THIS PERFORMANCE CANNOT BE UNSEEN', 'text-red');
+
+                // Phase 8 - 400ms pause, tagline (bright green)
+                await delay(400);
+                await typeLine('', 'text-bright-green');
+                await typeLine('  "Hack the void."', 'text-bright-green');
+
+                // Final - 800ms pause, clear screen, 300ms pause, ready prompt
+                await delay(800);
+                clearScreen();
+                await delay(300);
+                await typeLine('VOID_OS v0.1.7 — READY', 'text-bright-green');
+                await typeLine('', 'text-bright-green');
+                displayInstant('void@terminal_07:~$ ', 'text-bright-green');
+
+                // Add blinking cursor
+                addCursor();
+
+                // Mark boot as complete
+                isBootComplete = true;
+                terminalScreen.classList.add('boot-complete');
+                console.log('Boot sequence complete');
             }
 
             // Wait for image to load before initializing
