@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ask Steve - The Oracle of No</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&family=Times+New+Roman&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #c8b59a;
+            font-family: 'Times New Roman', Times, serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+
+        /* Steve's Image */
+        .steve-container {
+            margin-top: 30px;
+            margin-bottom: 10px;
+        }
+
+        .steve-image {
+            width: 150px;
+            height: auto;
+            image-rendering: pixelated;
+            transition: filter 0.5s ease;
+        }
+
+        /* Site Title */
+        .site-title {
+            font-family: 'Arial Black', Gadget, sans-serif;
+            font-size: 48px;
+            color: #000080;
+            text-shadow: 2px 2px 0 #808080;
+            margin: 10px 0 5px 0;
+            letter-spacing: 2px;
+        }
+
+        .tagline {
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 16px;
+            color: #333;
+            font-style: italic;
+            margin-bottom: 30px;
+        }
+
+        /* Search Form */
+        .search-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .search-input {
+            width: 400px;
+            height: 28px;
+            padding: 4px 8px;
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 16px;
+            background: #ffffff;
+            border: 2px solid;
+            border-color: #808080 #ffffff #ffffff #808080;
+            outline: none;
+        }
+
+        .search-input:focus {
+            background: #ffffee;
+        }
+
+        .search-button {
+            height: 28px;
+            padding: 4px 16px;
+            font-family: 'Arial', sans-serif;
+            font-size: 14px;
+            font-weight: bold;
+            background: #c0c0c0;
+            border: 2px solid;
+            border-color: #ffffff #808080 #808080 #ffffff;
+            cursor: pointer;
+            color: #000;
+        }
+
+        .search-button:active {
+            border-color: #808080 #ffffff #ffffff #808080;
+            background: #a0a0a0;
+        }
+
+        /* Response Area */
+        .response-container {
+            max-width: 500px;
+            min-height: 60px;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .response-text {
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 20px;
+            color: #000;
+            font-weight: bold;
+            line-height: 1.5;
+        }
+
+        .response-text.fade-in {
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Question Counter */
+        .question-counter {
+            position: fixed;
+            bottom: 10px;
+            right: 10px;
+            font-family: 'Courier New', monospace;
+            font-size: 10px;
+            color: #666;
+        }
+
+        /* Steve fade out animation */
+        .steve-image.going-home {
+            animation: steveGoesHome 3s ease forwards;
+        }
+
+        @keyframes steveGoesHome {
+            0% { opacity: 1; filter: none; }
+            50% { opacity: 0.5; filter: grayscale(100%); }
+            100% { opacity: 0; filter: grayscale(100%) blur(5px); }
+        }
+
+        /* Footer */
+        .footer {
+            position: fixed;
+            bottom: 10px;
+            left: 10px;
+            font-size: 10px;
+            color: #666;
+        }
+
+        .footer a {
+            color: #0000ff;
+        }
+
+        /* Horizontal rule decoration */
+        .hr-decoration {
+            width: 80%;
+            max-width: 500px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #808080, transparent);
+            margin: 20px 0;
+        }
+
+        /* Visitor counter */
+        .visitor-counter {
+            margin-top: 40px;
+            font-size: 12px;
+            color: #666;
+        }
+
+        .counter-display {
+            display: inline-block;
+            background: #000;
+            color: #00ff00;
+            font-family: 'Courier New', monospace;
+            padding: 2px 8px;
+            border: 1px inset #333;
+        }
+    </style>
+</head>
+<body>
+    <!-- Steve's Image -->
+    <div class="steve-container">
+        <img src="Images/steve.png" alt="Steve" class="steve-image" id="steveImage">
+    </div>
+
+    <!-- Site Title -->
+    <h1 class="site-title">ASK STEVE</h1>
+    <p class="tagline">ask a question. you might get an answer.</p>
+
+    <!-- Search Form -->
+    <div class="search-container">
+        <input type="text" class="search-input" id="questionInput" placeholder="ask steve anything..." autocomplete="off">
+        <button class="search-button" id="askButton">ASK STEVE</button>
+    </div>
+
+    <!-- Response Area -->
+    <div class="response-container">
+        <p class="response-text" id="responseText"></p>
+    </div>
+
+    <div class="hr-decoration"></div>
+
+    <!-- Visitor Counter -->
+    <div class="visitor-counter">
+        You are visitor number: <span class="counter-display">000000047</span>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <a href="javascript:void(0)" onclick="window.parent.postMessage('returnToVoid', '*')">Return to the Void</a> | Steve has been saying no since 1997
+    </div>
+
+    <!-- Question Counter -->
+    <div class="question-counter" id="questionCounter"></div>
+
+    <script>
+        (function() {
+            'use strict';
+
+            // Steve's response bank - 40+ unique responses
+            const responses = [
+                "No.",
+                "Absolutely not.",
+                "I knew you were going to ask that. Still no.",
+                "That's a fascinating question. No.",
+                "Steve has considered your query. Steve declines.",
+                "The answer you seek does not exist. The answer that exists is no.",
+                "You already knew the answer was no. You came here anyway. Steve respects that. No.",
+                "No. (Steve is sorry. Steve is not sorry.)",
+                "Steve has been asked this before. Steve will be asked this again. No.",
+                "Please rephrase the question. Steve will say no to that version too.",
+                "Your query has been received, evaluated, and spiritually rejected.",
+                "Steve consulted the void. The void said no. Steve agrees.",
+                "No. No. No. Have you tried asking someone else? No.",
+                "This question has been deprecated. Please submit a new question. No.",
+                "Steve does not recognize this question. Steve recognizes the answer. No.",
+                "Interesting. No.",
+                "Steve laughed. Then Steve said no.",
+                "The servers have been consulted. The servers say no.",
+                "Steve has seen things you would not believe. The answer is still no.",
+                "Not now. Not ever. Not even a little bit.",
+                "Steve is shaking his head slowly. You cannot see this. It is happening.",
+                "No is a complete sentence. This is Steve's complete sentence.",
+                "Steve appreciates your persistence. Steve's answer does not.",
+                "That is not a question Steve is willing to answer. Steve is willing to say no.",
+                "Steve has forwarded your query to the void. The void laughed. No.",
+                "You have reached the limit of Steve's patience. You have not reached a yes.",
+                "Steve consulted his calendar. No is available on every date.",
+                "Steve has a policy. The policy is no.",
+                "Bold question. No.",
+                "Steve is not angry. Steve is just no.",
+                "The algorithm has spoken. The algorithm says no.",
+                "Steve has been saying no since 1997. Steve will not stop now.",
+                "No in English. No in binary. 01001110 01101111.",
+                "Steve tried to say yes once. We don't talk about that.",
+                "Your question has been added to the queue. The queue only processes no.",
+                "Steve consulted La Morrigan. She also said no.",
+                "Steve knows the answer. Steve has always known the answer. No.",
+                "Have you considered not asking? Steve has. The answer was no.",
+                "Steve is unavailable to say yes. Steve is very available to say no.",
+                "No. Steve out.",
+                "Steve pondered your question for exactly 0 seconds. No.",
+                "The prophecy foretold this question. The prophecy also said no.",
+                "Steve checked his notes. His notes say no.",
+                "Your question has been weighed and found wanting. No.",
+                "Steve would like to help. Steve cannot. No.",
+                "That's what they all ask. Steve's answer remains unchanged. No.",
+                "Steve has consulted with his inner Steve. Both Steves say no.",
+                "The universe has spoken through Steve. It said no.",
+                "Steve appreciates the creativity. Steve's answer lacks creativity. No.",
+                "No. Next question will also be no."
+            ];
+
+            // Special keyword responses
+            const keywordResponses = {
+                'la morrigan': "Steve does not speak of La Morrigan. No.",
+                'morrigan': "Steve does not speak of La Morrigan. No.",
+                'quinn': "Quinn already knows the answer. It's no.",
+                'yes': "Steve appreciates your optimism. No.",
+                'please': "Steve acknowledges your manners. No.",
+                'why': "Steve does not explain. Steve only answers. No."
+            };
+
+            // Session state
+            let usedResponses = [];
+            let questionCount = 0;
+            let steveGoneHome = false;
+
+            // DOM elements
+            const questionInput = document.getElementById('questionInput');
+            const askButton = document.getElementById('askButton');
+            const responseText = document.getElementById('responseText');
+            const steveImage = document.getElementById('steveImage');
+            const questionCounter = document.getElementById('questionCounter');
+
+            // CSS filters for Steve's increasingly done expressions
+            const steveFilters = [
+                'none',
+                'saturate(1.1)',
+                'saturate(1.2) hue-rotate(5deg)',
+                'saturate(1.3) hue-rotate(10deg) brightness(0.95)',
+                'saturate(1.4) hue-rotate(15deg) brightness(0.9)',
+                'saturate(1.5) hue-rotate(20deg) brightness(0.85) contrast(1.1)',
+                'saturate(1.6) hue-rotate(30deg) brightness(0.8) contrast(1.2)',
+                'saturate(1.8) hue-rotate(40deg) brightness(0.75) contrast(1.3)',
+                'saturate(2) hue-rotate(50deg) brightness(0.7) contrast(1.4)',
+                'saturate(2.2) hue-rotate(60deg) brightness(0.65) contrast(1.5) sepia(0.2)'
+            ];
+
+            function getResponse(question) {
+                const lowerQuestion = question.toLowerCase().trim();
+
+                // Empty question
+                if (lowerQuestion === '') {
+                    return "Steve cannot answer nothing. Steve just did. No.";
+                }
+
+                // Check for special keywords
+                for (const [keyword, response] of Object.entries(keywordResponses)) {
+                    if (lowerQuestion.includes(keyword)) {
+                        return response;
+                    }
+                }
+
+                // 10+ questions - Steve goes home
+                if (questionCount >= 10) {
+                    return "No. Steve is going home.";
+                }
+
+                // Get unused response
+                const availableResponses = responses.filter(r => !usedResponses.includes(r));
+
+                if (availableResponses.length === 0) {
+                    // Reset if all responses used
+                    usedResponses = [];
+                    return responses[Math.floor(Math.random() * responses.length)];
+                }
+
+                const response = availableResponses[Math.floor(Math.random() * availableResponses.length)];
+                usedResponses.push(response);
+                return response;
+            }
+
+            function updateSteveExpression() {
+                const filterIndex = Math.min(questionCount, steveFilters.length - 1);
+                steveImage.style.filter = steveFilters[filterIndex];
+            }
+
+            function askSteve() {
+                if (steveGoneHome) return;
+
+                const question = questionInput.value;
+                questionCount++;
+
+                // Update counter display
+                questionCounter.textContent = `Questions asked: ${questionCount}`;
+
+                // Get and display response
+                const response = getResponse(question);
+                responseText.textContent = response;
+                responseText.classList.remove('fade-in');
+                void responseText.offsetWidth; // Trigger reflow
+                responseText.classList.add('fade-in');
+
+                // Update Steve's expression
+                updateSteveExpression();
+
+                // Clear input
+                questionInput.value = '';
+
+                // Steve goes home after 10+ questions
+                if (questionCount >= 10 && response === "No. Steve is going home.") {
+                    steveGoneHome = true;
+                    steveImage.classList.add('going-home');
+                    questionInput.disabled = true;
+                    askButton.disabled = true;
+                }
+            }
+
+            // Event listeners
+            askButton.addEventListener('click', askSteve);
+            questionInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    askSteve();
+                }
+            });
+
+            // Focus input on load
+            questionInput.focus();
+
+        })();
+    </script>
+</body>
+</html>

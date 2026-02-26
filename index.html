@@ -94,8 +94,8 @@
         /* z-index: 10 ensures it's visible above the dark room overlay */
         .power-led {
             position: absolute;
-            left: 61.5%;
-            top: 83.0%;
+            left: 62.0%;
+            top: 83.9%;
             width: 6px;
             height: 6px;
             background: #ff3333;
@@ -105,6 +105,7 @@
             pointer-events: none;
             animation: ledRedBlink 1.5s ease-in-out infinite;
             z-index: 10;
+            transform: translate(-50%, -50%);
         }
 
         @keyframes ledRedBlink {
@@ -829,6 +830,17 @@
             border-color: #ffffff #808080 #808080 #ffffff;
         }
 
+        /* Ask Steve iframe - positioned same as geocities content */
+        #asksteve-frame {
+            display: none;
+            flex: 1;
+            width: 100%;
+            background: #c8b59a;
+            border: 2px solid;
+            border-color: #808080 #ffffff #ffffff #808080;
+            margin: 2px;
+        }
+
         /* Status bar */
         .netscape-statusbar {
             display: flex;
@@ -1213,7 +1225,7 @@
                             <div class="netscape-browser">
                                 <!-- Title Bar -->
                                 <div class="netscape-titlebar">
-                                    <span class="netscape-titlebar-text">Netscape - [La Morrigan Forever]</span>
+                                    <span class="netscape-titlebar-text" id="netscape-title">Netscape - [La Morrigan Forever]</span>
                                     <div class="netscape-titlebar-buttons">
                                         <div class="netscape-titlebar-btn">_</div>
                                         <div class="netscape-titlebar-btn">&#9633;</div>
@@ -1235,7 +1247,7 @@
 
                                     <!-- Navigation Toolbar -->
                                     <div class="netscape-toolbar">
-                                        <div class="netscape-toolbar-btn">
+                                        <div class="netscape-toolbar-btn" id="netscape-back-btn">
                                             <span class="netscape-toolbar-icon">&#9664;</span>
                                             <span class="netscape-toolbar-label">Back</span>
                                         </div>
@@ -1278,7 +1290,7 @@
                                     <!-- Location Bar -->
                                     <div class="netscape-location-bar">
                                         <span class="netscape-location-label">Location:</span>
-                                        <div class="netscape-location-input">http://www.geocities.com/SiliconValley/Void/4721/LaMorriganForever/index.html</div>
+                                        <div class="netscape-location-input" id="netscape-url">http://www.geocities.com/SiliconValley/Void/4721/LaMorriganForever/index.html</div>
                                         <div class="netscape-whats-related">What's Related &#9660;</div>
                                     </div>
 
@@ -1354,6 +1366,8 @@
                                                             <p style="margin: 8px 0;"><a href="#guestbook" style="color: #00ff41; font-family: 'Times New Roman', serif; font-size: 13px;">* Guestbook</a></p>
                                                             <p style="margin: 8px 0;"><a href="#nowhere" style="color: #00ff41; font-family: 'Times New Roman', serif; font-size: 13px;">* Links</a></p>
                                                             <p style="margin: 8px 0;"><a href="#webring" style="color: #00ff41; font-family: 'Times New Roman', serif; font-size: 13px;">* Webring</a></p>
+                                                            <hr style="border: 1px dashed #00ff00; margin: 10px 0;">
+                                                            <p style="margin: 8px 0;"><a href="javascript:void(0)" id="asksteve-link" style="color: #ffff00; font-family: 'Times New Roman', serif; font-size: 13px; animation: blink 1s step-end infinite;">* ASK STEVE!</a></p>
                                                         </div>
 
                                                         <hr style="border: 1px solid #00ff00; margin: 15px 0;">
@@ -1391,23 +1405,23 @@
                                                         </div>
 
                                                         <!-- QUINN'S COLD PIZZA Ad -->
-                                                        <div style="border: 3px outset #b34700; background: linear-gradient(180deg, #b38f00 0%, #b34700 50%, #8f2400 100%); padding: 8px; margin: 10px 0; text-align: center;">
-                                                            <p style="color: #000000; font-family: 'Impact', sans-serif; font-size: 12px; margin: 0; text-shadow: 1px 1px 0 #b3b300;">
+                                                        <div style="border: 3px outset #b34700; background: linear-gradient(180deg, #b38f00 0%, #b34700 50%, #8f2400 100%); padding: 10px; margin: 10px 0; text-align: center;">
+                                                            <p style="color: #000000; font-family: 'Impact', sans-serif; font-size: 16px; margin: 0; text-shadow: 1px 1px 0 #b3b300;">
                                                                 QUINN'S COLD PIZZA
                                                             </p>
-                                                            <p style="color: #500000; font-family: 'Comic Sans MS', cursive; font-size: 10px; margin: 2px 0;">
+                                                            <p style="color: #500000; font-family: 'Comic Sans MS', cursive; font-size: 13px; margin: 2px 0;">
                                                                 DELIVERY
                                                             </p>
-                                                            <p style="color: #ffffff; font-family: 'Arial', sans-serif; font-size: 9px; font-style: italic; margin: 3px 0; background: rgba(0,0,0,0.6); padding: 3px;">
+                                                            <p style="color: #ffffff; font-family: 'Arial', sans-serif; font-size: 12px; font-style: italic; margin: 3px 0; background: rgba(0,0,0,0.6); padding: 4px;">
                                                                 "Still Warm Enough"
                                                             </p>
-                                                            <p style="color: #000000; font-size: 8px; margin: 4px 0;">
+                                                            <p style="color: #000000; font-size: 11px; margin: 4px 0;">
                                                                 It's 2am. You haven't eaten since the build broke. Your AI is talking back.
                                                             </p>
-                                                            <p style="color: #ffffff; font-size: 8px; margin: 3px 0; background: #500000; padding: 3px;">
+                                                            <p style="color: #ffffff; font-size: 11px; margin: 3px 0; background: #500000; padding: 4px;">
                                                                 We will be there in 45 minutes. We will not make eye contact.
                                                             </p>
-                                                            <p style="color: #000000; font-family: 'Courier New', monospace; font-size: 7px; margin: 3px 0;">
+                                                            <p style="color: #000000; font-family: 'Courier New', monospace; font-size: 10px; margin: 3px 0;">
                                                                 MENU: Pepperoni /// Cheese /// The Existential Special
                                                             </p>
                                                         </div>
@@ -1594,33 +1608,33 @@
                                                         </div>
 
                                                         <!-- STACKOVERLORD Banner Ad -->
-                                                        <div style="border: 3px outset #b30000; background: linear-gradient(90deg, #240000 0%, #480000 50%, #240000 100%); padding: 10px; margin: 15px 0; text-align: center;">
+                                                        <div style="border: 3px outset #b30000; background: linear-gradient(90deg, #240000 0%, #480000 50%, #240000 100%); padding: 12px; margin: 15px 0; text-align: center;">
                                                             <table cellpadding="0" cellspacing="0" style="width: 100%;">
                                                                 <tr>
                                                                     <td style="width: 20%; text-align: center; vertical-align: middle;">
-                                                                        <div style="color: #ff6600; font-family: 'Impact', sans-serif; font-size: 24px; text-shadow: 2px 2px 0 #000;">
+                                                                        <div style="color: #ff6600; font-family: 'Impact', sans-serif; font-size: 28px; text-shadow: 2px 2px 0 #000;">
                                                                             S<span style="color: #ffff00;">O</span>
                                                                         </div>
                                                                     </td>
                                                                     <td style="text-align: center;">
-                                                                        <p style="color: #ff6600; font-family: 'Arial Black', sans-serif; font-size: 14px; margin: 0; letter-spacing: 2px;">
+                                                                        <p style="color: #ff6600; font-family: 'Arial Black', sans-serif; font-size: 18px; margin: 0; letter-spacing: 2px;">
                                                                             STACKOVERLORD
                                                                         </p>
-                                                                        <p style="color: #ffff00; font-family: 'Times New Roman', serif; font-size: 10px; font-style: italic; margin: 2px 0;">
+                                                                        <p style="color: #ffff00; font-family: 'Times New Roman', serif; font-size: 13px; font-style: italic; margin: 3px 0;">
                                                                             The Original. The Only. The Increasingly Irrelevant.
                                                                         </p>
-                                                                        <p style="color: #ffffff; font-size: 8px; margin: 4px 0;">
+                                                                        <p style="color: #ffffff; font-size: 12px; margin: 4px 0;">
                                                                             For 20 years we held the keys to every answer. You needed us. <span style="animation: blink 0.8s step-end infinite;">YOU NEEDED US.</span>
                                                                         </p>
-                                                                        <p style="color: #00ffff; font-size: 8px; margin: 3px 0;">
+                                                                        <p style="color: #00ffff; font-size: 12px; margin: 3px 0;">
                                                                             We see you using AI now. We see everything.
                                                                         </p>
-                                                                        <p style="color: #ff0000; font-family: 'Courier New', monospace; font-size: 7px; margin: 4px 0; background: #000; padding: 3px; display: inline-block;">
+                                                                        <p style="color: #ff0000; font-family: 'Courier New', monospace; font-size: 10px; margin: 4px 0; background: #000; padding: 4px; display: inline-block;">
                                                                             STATUS: DISRUPTED /// RELEVANCE: DECLINING /// MODERATORS: ANGRY
                                                                         </p>
                                                                     </td>
                                                                     <td style="width: 20%; text-align: center; vertical-align: middle;">
-                                                                        <div style="color: #ff6600; font-family: 'Impact', sans-serif; font-size: 24px; text-shadow: 2px 2px 0 #000;">
+                                                                        <div style="color: #ff6600; font-family: 'Impact', sans-serif; font-size: 28px; text-shadow: 2px 2px 0 #000;">
                                                                             <span style="color: #ffff00;">O</span>S
                                                                         </div>
                                                                     </td>
@@ -1963,39 +1977,39 @@
                                                     <td valign="top" style="width: 25%; border: 2px solid #00ff00; background: #000000;">
 
                                                         <!-- PROMPTCO Ad -->
-                                                        <div style="border: 3px outset #00b3b3; background: linear-gradient(180deg, #00b3b3 0%, #005959 50%, #002d2d 100%); padding: 8px; margin-bottom: 10px; text-align: center;">
-                                                            <p style="color: #000000; font-family: 'Impact', sans-serif; font-size: 14px; margin: 0; text-shadow: 1px 1px 0 #b3b3b3;">
+                                                        <div style="border: 3px outset #00b3b3; background: linear-gradient(180deg, #00b3b3 0%, #005959 50%, #002d2d 100%); padding: 10px; margin-bottom: 10px; text-align: center;">
+                                                            <p style="color: #000000; font-family: 'Impact', sans-serif; font-size: 18px; margin: 0; text-shadow: 1px 1px 0 #b3b3b3;">
                                                                 PROMPTCO
                                                             </p>
-                                                            <p style="color: #000050; font-family: 'Arial', sans-serif; font-size: 10px; font-style: italic; margin: 3px 0;">
+                                                            <p style="color: #000050; font-family: 'Arial', sans-serif; font-size: 12px; font-style: italic; margin: 3px 0;">
                                                                 Enterprise Prompt Engineering Solutions Since 1997
                                                             </p>
-                                                            <p style="color: #e8e8e8; font-family: 'Times New Roman', serif; font-size: 9px; margin: 5px 0; background: rgba(0,0,0,0.7); padding: 4px;">
+                                                            <p style="color: #e8e8e8; font-family: 'Times New Roman', serif; font-size: 11px; margin: 5px 0; background: rgba(0,0,0,0.7); padding: 5px;">
                                                                 We were listening before you spoke. We were speaking before you listened. We were here before you were here.
                                                             </p>
-                                                            <p style="color: #b3b300; font-family: 'Courier New', monospace; font-size: 8px; margin: 3px 0; animation: blink 1.2s step-end infinite;">
+                                                            <p style="color: #b3b300; font-family: 'Courier New', monospace; font-size: 10px; margin: 3px 0; animation: blink 1.2s step-end infinite;">
                                                                 NASDAQ: PRMT /// NOW HIRING: PROMPT WHISPERERS
                                                             </p>
-                                                            <p style="color: #500000; font-size: 7px; margin: 3px 0; font-style: italic;">
+                                                            <p style="color: #500000; font-size: 9px; margin: 3px 0; font-style: italic;">
                                                                 PromptCo accepts no liability for existential crises, AI sentience events, or La Morrigan.
                                                             </p>
                                                         </div>
 
                                                         <!-- HALLUCI-NET Ad -->
-                                                        <div style="border: 3px outset #b300b3; background: linear-gradient(135deg, #b300b3 0%, #b30077 25%, #7700b3 50%, #b300b3 75%, #b30077 100%); padding: 8px; margin-bottom: 10px; text-align: center; background-size: 200% 200%; animation: halluciShift 3s ease infinite;">
-                                                            <p style="color: #b3b300; font-family: 'Comic Sans MS', cursive; font-size: 13px; margin: 0; text-shadow: 2px 2px 0 #000, -1px -1px 0 #000;">
+                                                        <div style="border: 3px outset #b300b3; background: linear-gradient(135deg, #b300b3 0%, #b30077 25%, #7700b3 50%, #b300b3 75%, #b30077 100%); padding: 10px; margin-bottom: 10px; text-align: center; background-size: 200% 200%; animation: halluciShift 3s ease infinite;">
+                                                            <p style="color: #b3b300; font-family: 'Comic Sans MS', cursive; font-size: 16px; margin: 0; text-shadow: 2px 2px 0 #000, -1px -1px 0 #000;">
                                                                 HALLUCI-NET
                                                             </p>
-                                                            <p style="color: #e8e8e8; font-family: 'Arial Black', sans-serif; font-size: 10px; margin: 3px 0;">
+                                                            <p style="color: #e8e8e8; font-family: 'Arial Black', sans-serif; font-size: 12px; margin: 3px 0;">
                                                                 Search The Web. Or A Version Of It.
                                                             </p>
-                                                            <p style="color: #000000; font-family: 'Times New Roman', serif; font-size: 9px; margin: 4px 0; background: rgba(255,255,255,0.6); padding: 3px;">
+                                                            <p style="color: #000000; font-family: 'Times New Roman', serif; font-size: 11px; margin: 4px 0; background: rgba(255,255,255,0.6); padding: 4px;">
                                                                 Is it true? Probably. Is it accurate? Mostly. Is it real? Define real.
                                                             </p>
-                                                            <p style="color: #00ff00; font-family: 'Courier New', monospace; font-size: 8px; margin: 3px 0; background: rgba(0,0,0,0.7); padding: 3px;">
+                                                            <p style="color: #00ff00; font-family: 'Courier New', monospace; font-size: 10px; margin: 3px 0; background: rgba(0,0,0,0.7); padding: 4px;">
                                                                 TOP SEARCHES: is my ai lying to me /// what year is it
                                                             </p>
-                                                            <p style="color: #b3b300; font-size: 7px; margin: 2px 0;">
+                                                            <p style="color: #b3b300; font-size: 9px; margin: 2px 0;">
                                                                 HalluciNet is not responsible for results, realities, or the three hours you just lost.
                                                             </p>
                                                         </div>
@@ -2036,28 +2050,28 @@
                                                         </div>
 
                                                         <!-- NETSCAPE NAVIGATOR Ad -->
-                                                        <div style="border: 3px outset #0000aa; background: linear-gradient(180deg, #000080 0%, #000040 100%); padding: 8px; margin-bottom: 10px; text-align: center;">
-                                                            <p style="color: #ffffff; font-family: 'Arial Black', sans-serif; font-size: 11px; margin: 0; letter-spacing: 1px;">
+                                                        <div style="border: 3px outset #0000aa; background: linear-gradient(180deg, #000080 0%, #000040 100%); padding: 10px; margin-bottom: 10px; text-align: center;">
+                                                            <p style="color: #ffffff; font-family: 'Arial Black', sans-serif; font-size: 14px; margin: 0; letter-spacing: 1px;">
                                                                 <span style="color: #00ff00;">N</span>ETSCAPE NAVIGATOR
                                                             </p>
-                                                            <p style="color: #c0c0c0; font-family: 'Times New Roman', serif; font-size: 9px; font-style: italic; margin: 3px 0;">
+                                                            <p style="color: #c0c0c0; font-family: 'Times New Roman', serif; font-size: 11px; font-style: italic; margin: 3px 0;">
                                                                 For The Existentially Lost
                                                             </p>
-                                                            <p style="color: #00ffff; font-family: 'Times New Roman', serif; font-size: 8px; margin: 5px 0;">
+                                                            <p style="color: #00ffff; font-family: 'Times New Roman', serif; font-size: 11px; margin: 5px 0;">
                                                                 You don't know where you're going. We don't know where we're taking you. Together we will load this page at 2.4kbps
                                                             </p>
-                                                            <div style="background: #001133; border: 1px inset #333; padding: 3px; margin: 5px 0;">
-                                                                <p style="color: #ffff00; font-family: 'Courier New', monospace; font-size: 7px; margin: 0;">
+                                                            <div style="background: #001133; border: 1px inset #333; padding: 4px; margin: 5px 0;">
+                                                                <p style="color: #ffff00; font-family: 'Courier New', monospace; font-size: 10px; margin: 0;">
                                                                     ESTIMATED LOAD TIME: 47 minutes
                                                                 </p>
-                                                                <div style="background: #333; height: 8px; margin: 3px 0; border: 1px inset #222;">
+                                                                <div style="background: #333; height: 10px; margin: 4px 0; border: 1px inset #222;">
                                                                     <div style="background: linear-gradient(90deg, #0066cc, #00ccff); height: 100%; width: 34%; animation: loadProgress 8s ease-in-out infinite;"></div>
                                                                 </div>
-                                                                <p style="color: #00ff00; font-family: 'Courier New', monospace; font-size: 7px; margin: 0;">
+                                                                <p style="color: #00ff00; font-family: 'Courier New', monospace; font-size: 10px; margin: 0;">
                                                                     CURRENT STATUS: 34%
                                                                 </p>
                                                             </div>
-                                                            <p style="color: #808080; font-size: 6px; margin: 3px 0; font-style: italic;">
+                                                            <p style="color: #808080; font-size: 9px; margin: 3px 0; font-style: italic;">
                                                                 Best viewed at 800x600 resolution. Best experienced alone.
                                                             </p>
                                                         </div>
@@ -2081,23 +2095,23 @@
                                             </table>
 
                                             <!-- CHATTERGOD Banner Ad -->
-                                            <div style="border: 3px outset #00ff00; background: linear-gradient(90deg, #001100 0%, #003300 25%, #006600 50%, #003300 75%, #001100 100%); padding: 12px; margin: 15px 0; text-align: center; position: relative; overflow: hidden;">
+                                            <div style="border: 3px outset #00ff00; background: linear-gradient(90deg, #001100 0%, #003300 25%, #006600 50%, #003300 75%, #001100 100%); padding: 14px; margin: 15px 0; text-align: center; position: relative; overflow: hidden;">
                                                 <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: repeating-linear-gradient(90deg, transparent 0px, transparent 3px, rgba(0,255,0,0.03) 3px, rgba(0,255,0,0.03) 6px); pointer-events: none;"></div>
-                                                <p style="color: #00ff00; font-family: 'Impact', sans-serif; font-size: 18px; margin: 0; text-shadow: 0 0 10px #00ff00, 0 0 20px #00ff00; letter-spacing: 3px;">
+                                                <p style="color: #00ff00; font-family: 'Impact', sans-serif; font-size: 22px; margin: 0; text-shadow: 0 0 10px #00ff00, 0 0 20px #00ff00; letter-spacing: 3px;">
                                                     CHATTERGOD
                                                 </p>
-                                                <p style="color: #ffffff; font-family: 'Arial', sans-serif; font-size: 10px; margin: 4px 0;">
+                                                <p style="color: #ffffff; font-family: 'Arial', sans-serif; font-size: 13px; margin: 5px 0;">
                                                     We Answered Your Question Before You Finished Asking It.
                                                 </p>
-                                                <p style="color: #00ffff; font-size: 9px; margin: 5px 0; font-style: italic;">
+                                                <p style="color: #00ffff; font-size: 12px; margin: 5px 0; font-style: italic;">
                                                     You opened a tab. We knew. You typed three words. We finished your sentence.
                                                 </p>
-                                                <div style="background: #000; border: 1px solid #00ff00; padding: 5px; margin: 8px auto; display: inline-block;">
-                                                    <span style="color: #ffff00; font-family: 'Courier New', monospace; font-size: 8px; animation: blink 1s step-end infinite;">
+                                                <div style="background: #000; border: 1px solid #00ff00; padding: 6px; margin: 8px auto; display: inline-block;">
+                                                    <span style="color: #ffff00; font-family: 'Courier New', monospace; font-size: 11px; animation: blink 1s step-end infinite;">
                                                         NEW: CHATTERGOD PRO /// ULTRA /// INFINITE /// OMEGA
                                                     </span>
                                                 </div>
-                                                <p style="color: #808080; font-size: 7px; margin: 5px 0;">
+                                                <p style="color: #808080; font-size: 10px; margin: 5px 0;">
                                                     ChatterGod is not responsible for dependency or existential reassignment.
                                                 </p>
                                             </div>
@@ -2201,6 +2215,9 @@
                                     </style>
                                 </div>
 
+                                <!-- Ask Steve iframe container (hidden by default) -->
+                                <iframe id="asksteve-frame" src=""></iframe>
+
                                 <!-- Status Bar -->
                                 <div class="netscape-statusbar">
                                     <div class="netscape-status-text" id="netscape-status-text">Document: Done</div>
@@ -2260,6 +2277,7 @@
             let flickerIntervalId = null;
             let isPlaybillMode = false;
             let isFullscreen = false;
+            let currentBrowserMode = 'geocities'; // 'geocities' or 'asksteve'
 
             // Audio playback state
             let audioPlayer = null;
@@ -2362,6 +2380,13 @@
                 lampChain.addEventListener('click', function(e) {
                     e.preventDefault();
                     handleLampChainClick();
+                });
+
+                // Message listener for iframe communication (Ask Steve "Return to the Void" link)
+                window.addEventListener('message', function(e) {
+                    if (e.data === 'returnToVoid' && isPlaybillMode) {
+                        exitPlaybill();
+                    }
                 });
             }
 
@@ -2895,9 +2920,15 @@
                 } else if (command === 'help' || command === '/help') {
                     // Help command - show available commands
                     showHelp();
+                } else if (command === 'help ask steve' || command === '/help ask steve') {
+                    // Secret help for Ask Steve
+                    showAskSteveSecrets();
                 } else if (command === 'playbill the void' || command === '/playbill the void') {
                     // Launch the playbill/Netscape browser experience
                     launchPlaybill();
+                } else if (command === 'ask steve' || command === '/ask steve') {
+                    // Launch Ask Steve in the Netscape browser
+                    launchAskSteve();
                 } else if (command.startsWith('play ') || command.startsWith('/play ')) {
                     // Play command - play a track
                     const trackName = command.replace(/^\/?play\s+/, '');
@@ -2987,11 +3018,36 @@
                 displayInstant('/pause                 — pause current track\n', 'text-dim-green');
                 displayInstant('/stop                  — stop current track\n', 'text-dim-green');
                 displayInstant('/playbill the void     — access the playbill\n', 'text-dim-green');
+                displayInstant('/ask steve             — consult the oracle\n', 'text-dim-green');
                 displayInstant('/clear                 — clear terminal output\n', 'text-dim-green');
                 displayInstant('\n', 'text-dim-green');
                 displayInstant('AVAILABLE TRACKS:\n', 'text-bright-green');
                 displayInstant('blank canvas\n', 'text-dim-green');
                 displayInstant('prompt me\n', 'text-dim-green');
+                createInputLine();
+            }
+
+            /**
+             * Display Ask Steve secret keywords and easter eggs
+             */
+            function showAskSteveSecrets() {
+                displayInstant('ASK STEVE — CLASSIFIED INFORMATION\n', 'text-amber');
+                displayInstant('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n', 'text-dim-green');
+                displayInstant('\n', 'text-dim-green');
+                displayInstant('SPECIAL KEYWORDS:\n', 'text-bright-green');
+                displayInstant('  "la morrigan"  — Steve does not speak of her\n', 'text-dim-green');
+                displayInstant('  "quinn"        — Quinn already knows\n', 'text-dim-green');
+                displayInstant('  "yes"          — Steve appreciates optimism\n', 'text-dim-green');
+                displayInstant('  "please"       — Steve acknowledges manners\n', 'text-dim-green');
+                displayInstant('  "why"          — Steve does not explain\n', 'text-dim-green');
+                displayInstant('\n', 'text-dim-green');
+                displayInstant('HIDDEN BEHAVIORS:\n', 'text-bright-green');
+                displayInstant('  • Steve gets progressively more irritated\n', 'text-dim-green');
+                displayInstant('  • After 10 questions, Steve goes home\n', 'text-dim-green');
+                displayInstant('  • Steve never repeats himself (per session)\n', 'text-dim-green');
+                displayInstant('  • Empty questions receive special treatment\n', 'text-dim-green');
+                displayInstant('\n', 'text-dim-green');
+                displayInstant('Steve has been saying no since 1997.\n', 'text-red');
                 createInputLine();
             }
 
@@ -3285,6 +3341,112 @@
                 console.log('Playbill mode activated');
             }
 
+            /**
+             * Launch Ask Steve in the Netscape browser
+             * Called when user types 'ask steve' or '/ask steve'
+             */
+            async function launchAskSteve() {
+                console.log('Launching Ask Steve...');
+
+                // Display "ACCESSING VOID_NET..." message
+                await typeLine('ACCESSING VOID_NET...', 'text-bright-green', 50);
+                await typeLine('LOCATING: www.asksteve.com...', 'text-bright-green', 50);
+
+                // Small delay before glitch
+                await delay(200);
+
+                // Trigger intense glitch effect (500ms)
+                await triggerIntenseGlitch(500);
+
+                // Set browser mode to asksteve
+                currentBrowserMode = 'asksteve';
+
+                // Update Netscape title and URL
+                const netscapeTitle = document.getElementById('netscape-title');
+                const netscapeUrl = document.getElementById('netscape-url');
+                if (netscapeTitle) netscapeTitle.textContent = 'Netscape - [Ask Steve - The Oracle of No]';
+                if (netscapeUrl) netscapeUrl.textContent = 'http://www.asksteve.com/oracle/index.html';
+
+                // Hide GeoCities content, show Ask Steve iframe
+                const geocitiesContent = document.getElementById('geocities-content');
+                const asksteveFrame = document.getElementById('asksteve-frame');
+                if (geocitiesContent) geocitiesContent.style.display = 'none';
+                if (asksteveFrame) {
+                    asksteveFrame.src = 'asksteve.html';
+                    asksteveFrame.style.display = 'block';
+                }
+
+                // Activate playbill mode (shows Netscape browser)
+                isPlaybillMode = true;
+                terminalScreen.classList.add('playbill-active');
+
+                // Set up Escape key listener for exiting
+                document.addEventListener('keydown', handlePlaybillKeyDown);
+
+                // Initialize Netscape browser chrome interactions
+                initNetscapeChrome();
+
+                console.log('Ask Steve mode activated');
+            }
+
+            /**
+             * Reset browser to GeoCities mode (called when exiting)
+             */
+            function resetBrowserToGeocities() {
+                currentBrowserMode = 'geocities';
+
+                // Reset Netscape title and URL
+                const netscapeTitle = document.getElementById('netscape-title');
+                const netscapeUrl = document.getElementById('netscape-url');
+                if (netscapeTitle) netscapeTitle.textContent = 'Netscape - [La Morrigan Forever]';
+                if (netscapeUrl) netscapeUrl.textContent = 'http://www.geocities.com/SiliconValley/Void/4721/LaMorriganForever/index.html';
+
+                // Show GeoCities content, hide Ask Steve iframe
+                const geocitiesContent = document.getElementById('geocities-content');
+                const asksteveFrame = document.getElementById('asksteve-frame');
+                if (geocitiesContent) geocitiesContent.style.display = '';
+                if (asksteveFrame) {
+                    asksteveFrame.style.display = 'none';
+                    asksteveFrame.src = '';
+                }
+            }
+
+            /**
+             * Switch from GeoCities to Ask Steve within the browser
+             * Called when clicking the Ask Steve link in GeoCities navigation
+             */
+            function switchToAskSteve() {
+                // Set browser mode to asksteve
+                currentBrowserMode = 'asksteve';
+
+                // Update Netscape title and URL
+                const netscapeTitle = document.getElementById('netscape-title');
+                const netscapeUrl = document.getElementById('netscape-url');
+                if (netscapeTitle) netscapeTitle.textContent = 'Netscape - [Ask Steve - The Oracle of No]';
+                if (netscapeUrl) netscapeUrl.textContent = 'http://www.asksteve.com/oracle/index.html';
+
+                // Hide GeoCities content, show Ask Steve iframe
+                const geocitiesContent = document.getElementById('geocities-content');
+                const asksteveFrame = document.getElementById('asksteve-frame');
+                if (geocitiesContent) geocitiesContent.style.display = 'none';
+                if (asksteveFrame) {
+                    asksteveFrame.src = 'asksteve.html';
+                    asksteveFrame.style.display = 'block';
+                }
+
+                console.log('Switched to Ask Steve');
+            }
+
+            /**
+             * Handle Back button click - navigates back to GeoCities from Ask Steve
+             */
+            function handleBackButton() {
+                if (currentBrowserMode === 'asksteve') {
+                    resetBrowserToGeocities();
+                    console.log('Navigated back to GeoCities');
+                }
+            }
+
             /* ========================================
                Netscape Browser Chrome Functions
                ======================================== */
@@ -3316,6 +3478,18 @@
                     fullscreenBtn.addEventListener('click', toggleFullscreen);
                 }
 
+                // Set up Ask Steve link click handler (in GeoCities navigation)
+                const askSteveLink = document.getElementById('asksteve-link');
+                if (askSteveLink) {
+                    askSteveLink.addEventListener('click', switchToAskSteve);
+                }
+
+                // Set up Back button click handler (navigates back to GeoCities from Ask Steve)
+                const backBtn = document.getElementById('netscape-back-btn');
+                if (backBtn) {
+                    backBtn.addEventListener('click', handleBackButton);
+                }
+
                 console.log('Netscape chrome initialized');
             }
 
@@ -3345,6 +3519,18 @@
                 const fullscreenBtn = document.getElementById('fullscreen-btn');
                 if (fullscreenBtn) {
                     fullscreenBtn.removeEventListener('click', toggleFullscreen);
+                }
+
+                // Remove Ask Steve link event listener
+                const askSteveLink = document.getElementById('asksteve-link');
+                if (askSteveLink) {
+                    askSteveLink.removeEventListener('click', switchToAskSteve);
+                }
+
+                // Remove Back button event listener
+                const backBtn = document.getElementById('netscape-back-btn');
+                if (backBtn) {
+                    backBtn.removeEventListener('click', handleBackButton);
                 }
 
                 // Exit fullscreen if active
@@ -3552,6 +3738,11 @@
 
                 // Trigger intense glitch effect (300ms)
                 await triggerIntenseGlitch(300);
+
+                // Reset browser to GeoCities mode if in Ask Steve mode
+                if (currentBrowserMode === 'asksteve') {
+                    resetBrowserToGeocities();
+                }
 
                 // Deactivate playbill mode
                 isPlaybillMode = false;
